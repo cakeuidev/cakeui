@@ -148,13 +148,11 @@ function Select(props: SelectProps) {
       }
     }
     setIndex(newIndex)
-    moveIndex.current = false
     if (n) {
       moveIndex.current = true
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         const el = document.querySelector('.ui-select-hover')
         el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-        setTimeout(() => moveIndex.current = false)
       })
     }
   }
@@ -274,7 +272,12 @@ function Select(props: SelectProps) {
                     'ui-select-active': multiple ? v?.includes(option.value) : option.value === v,
                     'ui-select-disabled': rest.disabled || option.disabled
                   })}
-                  onMouseMove={() => !moveIndex.current && setIndex(i)}
+                  onMouseMove={() => {
+                    if (!moveIndex.current) {
+                      setIndex(i)
+                    }
+                    moveIndex.current = false
+                  }}
                   onClick={() => {
                     if (rest.disabled || option.disabled) {
                       return

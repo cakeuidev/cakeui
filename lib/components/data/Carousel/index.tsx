@@ -1,4 +1,4 @@
-import React, { use, useEffect, useMemo, useRef } from 'react'
+import React, { use, useEffect, useMemo, useRef, useState } from 'react'
 import { cls } from '../../../utils/index.js'
 import { useEventListener, useFirstRender, useTimeout } from '../../../hooks/index.js'
 import { useComponentRef, useStateListner } from '../../tools'
@@ -58,6 +58,7 @@ function Carousel(props: CarouselProps) {
   const itemEl = useRef<{ [k: string]: HTMLDivElement | null }>({})
   const dragRef = useRef<{ initKey: string, initX: number, startX: number, scrollLeft: number }>(null)
   const [activeKey, setActiveKey] = useStateListner(propsActiveKey, onChangeActiveKey, keys[0])
+  const [dragging, setDragging] = useState(false)
 
   const activeIndex = useMemo(() => {
     return keys.indexOf(activeKey)
@@ -68,9 +69,7 @@ function Carousel(props: CarouselProps) {
     if (!el || dragRef.current) {
       return
     }
-    beforeScroll(el, !firstRender)
-    el.scrollIntoView({ behavior: firstRender ? 'instant' : 'smooth', inline: 'center' })
-    afterScroll(el)
+    scrollTo(el, firstRender ? 'instant' : 'smooth')
   }, [activeKey])
   useEffect(() => {
     if (keys.length && activeIndex === -1) {
@@ -87,76 +86,50 @@ function Carousel(props: CarouselProps) {
     }
     setActiveKey(keys[index])
   }
-  const beforeScroll = (el: HTMLElement, clone?: boolean) => {
-    if (!infinite || !groupEl.current) {
-      return
-    }
+  const scrollTo = (el: HTMLElement, behavior: ScrollBehavior = 'smooth') => {
     timeout.stop()
-    removeClone()
-    const els = groupEl.current.querySelectorAll('.ui-carousel-item')
-    const before = [...els].indexOf(el)
-    const after = els.length - before - 1
-    const diff = Math.floor(Math.abs(before - after))
-    for (let i = 0; i < diff / 2; i++) {
-      const el = before > after ? els[i] : els[els.length - 1 - i]
-      if (clone) {
-        const clone = el.cloneNode(true) as HTMLElement
-        clone.classList.add('ui-carousel-clone')
-        groupEl.current.insertBefore(clone, el)
-      }
-      if (before > after) {
-        groupEl.current.append(el)
-      } else {
-        groupEl.current.prepend(el)
-      }
-    }
-  }
-  const afterScroll = (el: HTMLElement, callback?: () => any) => {
-    const center = document.createElement('span')
-    center.classList.add('ui-carousel-center')
-    el.append(center)
-    const ovserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        callback?.()
-        setTimeout(removeClone, 100)
-        setDragStyle(false)
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior, block: 'nearest', inline: 'center' })
+      const center = document.createElement('span')
+      center.classList.add('ui-carousel-center')
+      el.append(center)
+      const ovserver = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting || !groupEl.current) {
+          return
+        }
+        if (infinite) {
+          const els = groupEl.current.querySelectorAll('.ui-carousel-item')
+          const before = [...els].indexOf(el)
+          const after = els.length - before - 1
+          const diff = Math.floor(Math.abs(before - after))
+          for (let i = 0; i < diff / 2; i++) {
+            const el = before > after ? els[i] : els[els.length - 1 - i]
+            if (before > after) {
+              groupEl.current.append(el)
+            } else {
+              groupEl.current.prepend(el)
+            }
+          }
+          el.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' })
+        }
         if (autoplay) {
           timeout.start()
         }
         center.remove()
         ovserver.disconnect()
-      }
-    }, {
-      root: groupEl.current,
-      rootMargin: '0px -50% 0px -50%'
+      }, {
+        root: groupEl.current,
+        rootMargin: '0px -50% 0px -50%'
+      })
+      ovserver.observe(center)
+      
     })
-    ovserver.observe(center)
-  }
-  const removeClone = () => {
-    groupEl.current?.querySelectorAll('.ui-carousel-clone').forEach((el) => el.remove())
-  }
-  const setDragStyle = (drag: boolean) => {
-    if (!groupEl.current) {
-      return
-    }
-    if (!drag && groupEl.current.parentElement) {
-      groupEl.current.parentElement.style.cursor = ''
-    }
-    groupEl.current.style.pointerEvents = drag ? 'none' : ''
-    groupEl.current.style.userSelect = drag ? 'none' : ''
-    groupEl.current.style.scrollSnapType = drag ? 'none' : ''
-    for (let el of Object.values(itemEl.current)) {
-      if (el) {
-        el.style.scrollSnapAlign = drag ? 'none' : ''
-      }
-    }
   }
 
   useEventListener('pointermove', (e) => {
     if (!dragRef.current || !groupEl.current) {
       return
     }
-    setDragStyle(true)
     const event = e as MouseEvent
     const { startX, scrollLeft } = dragRef.current
     const offset = event.clientX - startX
@@ -240,19 +213,19 @@ function Carousel(props: CarouselProps) {
     if (index < 0 || index > keys.length - 1) {
       index = activeIndex
     }
-    const el = itemEl.current[keys[index]]
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', inline: 'center' })
-      afterScroll(el, () => {
-        beforeScroll(el)
-        el.scrollIntoView({ behavior: 'instant', inline: 'center' })
-        setActiveKey(keys[index])
-      })
+    if (index === activeIndex) {
+      const el = itemEl.current[keys[index]]
+      if (el) {
+        scrollTo(el)
+      } 
+    } else {
+      setActiveKey(keys[index])
     }
+    setDragging(false)
     dragRef.current = null
   }, void 0, true)
   useEventListener('pointercancel', () => {
-    setDragStyle(false)
+    setDragging(false)
     dragRef.current = null
   }, void 0, true)
 
@@ -264,7 +237,9 @@ function Carousel(props: CarouselProps) {
   return (
     <div
       {...rest}
-      className={cls('ui-carousel', rest.className)}
+      className={cls('ui-carousel', {
+        'ui-carousel-dragging': dragging
+      }, rest.className)}
     >
       <div className='ui-carousel-body'>
         {arrows && (
@@ -285,15 +260,13 @@ function Carousel(props: CarouselProps) {
             if (!draggable || !groupEl.current || !activeKey) {
               return
             }
-            if (groupEl.current.parentElement) {
-              groupEl.current.parentElement.style.cursor = 'grabbing'
-            }
             dragRef.current = {
               initKey: activeKey,
               initX: e.clientX,
               startX: e.clientX,
               scrollLeft: groupEl.current.scrollLeft
             }
+            setDragging(true)
           }}
         >
           <CarouselContext.Provider value={{ activeKey, itemEl }}>

@@ -136,6 +136,8 @@ function DataTable(props: DataTableProps) {
   const [filterOptions, setFilterOptions] = useState<DataTableFilterOption[]>([])
   const [splitLine, setSplitLine] = useState<React.CSSProperties>()
   const [dragBlock, setDragBlock] = useState<React.CSSProperties>()
+  const [resizing, setResizing] = useState(false)
+  const [dragging, setDragging] = useState(false)
 
   const searchFitler = useMemo(() => {
     if (!filterSearch) {
@@ -143,14 +145,14 @@ function DataTable(props: DataTableProps) {
     }
     return filterOptions.filter((x) => convert(x.value).toUpperCase().includes(filterSearch.toUpperCase()))
   }, [filterOptions, filterSearch])
-  const viewData = useMemo(() => {
+  const filterData = useMemo(() => {
     if (!data) {
       return []
     }
-    let viewData = [...data]
+    let filterData = [...data]
     if (fields && filter && Object.values(filter).find((x) => x.length)) {
       const fieldMap = new Map(fields.map((x) => [x.key, x]))
-      viewData = viewData.filter((x) => {
+      filterData = filterData.filter((x) => {
         let find = true
         for (let [key, values] of Object.entries(filter)) {
           const field = fieldMap.get(key)
@@ -173,12 +175,8 @@ function DataTable(props: DataTableProps) {
         return find
       })
     }
-    if (pageSize && pageSize > 0 && page && page > 0) {
-      const start = (page - 1) * pageSize
-      viewData = viewData.slice(start, start + pageSize)
-    }
     if (sort?.key && sort?.order) {
-      viewData.sort((a, b) => {
+      filterData.sort((a, b) => {
         let A = a[sort.key as string]
         let B = b[sort.key as string]
         let C: number | undefined = void 0
@@ -199,8 +197,16 @@ function DataTable(props: DataTableProps) {
         return Number(!A || A === 'null') - Number(!B || B === 'null')
       })
     }
-    return viewData
-  }, [fields, data, filter, filterMode, pageSize, page, sort])
+    return filterData
+  }, [fields, data, filter, filterMode, sort])
+  const pageData = useMemo(() => {
+    let pageData = filterData
+    if (pageSize && pageSize > 0 && page && page > 0) {
+      const start = (page - 1) * pageSize
+      pageData = pageData.slice(start, start + pageSize)
+    }
+    return pageData
+  }, [filterData, pageSize, page])
   const fieldWidths = useMemo(() => {
     if (!fields) {
       return {}
@@ -212,10 +218,10 @@ function DataTable(props: DataTableProps) {
     return fieldWidths
   }, [fields, fieldWidth])
   const [itemHeights, dataHeight] = useMemo(() => {
-    const itemHeights = viewData.map((x) => Math.max(itemHeight?.(x) ?? 32, 24))
+    const itemHeights = pageData.map((x) => Math.max(itemHeight?.(x) ?? 32, 24))
     const dataHeight = itemHeights.reduce((prev, curr) => prev + curr, 0)
     return [itemHeights, dataHeight]
-  }, [viewData, itemHeight])
+  }, [pageData, itemHeight])
   const colHeight = useMemo(() => {
     return Math.max(fieldHeight, 24)
   }, [fieldHeight])
@@ -255,7 +261,7 @@ function DataTable(props: DataTableProps) {
     let rows = [], top = colHeight, start = -1, end = -1
     for (let i = 0; i < itemHeights.length; i++) {
       const bottom = top + itemHeights[i]
-      rows.push({ item: viewData[i], top: top - colHeight, height: itemHeights[i] })
+      rows.push({ item: pageData[i], top: top - colHeight, height: itemHeights[i] })
       if (
         virtualScroll ? (
           rendering ? (
@@ -273,7 +279,7 @@ function DataTable(props: DataTableProps) {
       top = bottom
     }
     return rows.slice(start, end)
-  }, [viewData, view.height, scroll.top, colHeight, itemHeights, overscan, rendering])
+  }, [pageData, view.height, scroll.top, colHeight, itemHeights, overscan, rendering])
 
   useEffect(() => {
     renderFields()
@@ -300,8 +306,9 @@ function DataTable(props: DataTableProps) {
     }
   }, [view.width, fitWidth, rendering])
   useEffect(() => {
+    setPage(1)
     groupEl.current?.scrollTo({ top: 0 })
-  }, [page])
+  }, [filterData])
 
   const renderView = () => {
     if (!groupEl.current) {
@@ -318,7 +325,7 @@ function DataTable(props: DataTableProps) {
       return
     }
     setRendering(true)
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       const fitWidth: { [k: string]: number } = {}
       const minWidth: { [k: string]: number } = {}
       for (let [key, el] of Object.entries(thEl.current)) {
@@ -360,21 +367,6 @@ function DataTable(props: DataTableProps) {
     const values = newFitler[key]
     newFitler[key] = values.includes(value) ? values.filter((x) => x !== value) : [...values, value]
     setFilter(newFitler)
-  }
-  const setDragStyle = (drag: boolean, cursor: string = '') => {
-    if (!groupEl.current) {
-      return
-    }
-    groupEl.current.style.cursor = drag ? cursor : ''
-    for (let i = 0; i < groupEl.current.children.length; i++) {
-      const tableEl = groupEl.current.children[i] as HTMLElement
-      tableEl.style.pointerEvents = drag ? 'none' : ''
-      tableEl.style.userSelect = drag ? 'none' : ''
-    }
-    if (!drag) {
-      setSplitLine(void 0)
-      setDragBlock(void 0)
-    }
   }
   const startScroll = (speed: number) => {
     if (scrollAnimation.current) {
@@ -432,8 +424,9 @@ function DataTable(props: DataTableProps) {
       setResizeWidth({ ...resizeWidth, [field.key]: width })
       onResize?.(field, width)
     }
-    setDragStyle(false)
     stopScroll()
+    setSplitLine(void 0)
+    setResizing(false)
     resizeRef.current = null
   }, void 0, true)
 
@@ -483,13 +476,7 @@ function DataTable(props: DataTableProps) {
           if (field.fixed !== 'left' && targetIndex === tableFields.length - 1) {
             left -= 2
           }
-          if (splitLineEl.current) {
-            splitLineEl.current.style.top = `${top}px`
-            splitLineEl.current.style.left = `${left}px`
-            splitLineEl.current.style.zIndex = `${zIndex}`
-          } else {
-            setSplitLine({ top, left, zIndex })
-          }
+          setSplitLine({ top, left, zIndex })
           dragRef.current.targetIndex = fields.indexOf(field)
         }
       } else {
@@ -517,12 +504,10 @@ function DataTable(props: DataTableProps) {
       newFields.splice(targetIndex, 0, field)
       onDragField?.({ sourceField: field, sourceIndex, targetIndex, newFields })
     }
-    setDragStyle(false)
     stopScroll()
-    const el = thEl.current[dragRef.current.field.key]
-    if (el) {
-      el.style.cursor = 'grab'
-    }
+    setSplitLine(void 0)
+    setDragBlock(void 0)
+    setDragging(false)
     dragRef.current = null
   }, void 0, true)
 
@@ -531,7 +516,9 @@ function DataTable(props: DataTableProps) {
       {...rest}
       className={cls('ui-data-table', {
         'ui-data-table-gridlines': gridlines,
-        'ui-data-table-rendering': rendering
+        'ui-data-table-rendering': rendering,
+        'ui-data-table-resizing': resizing,
+        'ui-data-table-dragging': dragging
       }, rest.className)}
     >
       <div
@@ -588,9 +575,9 @@ function DataTable(props: DataTableProps) {
                           ) {
                             return
                           }
-                          setDragStyle(true, 'grabbing')
-                          el.style.cursor = 'grabbing'
+                          // el.style.cursor = 'grabbing'
                           dragRef.current = { field, startX: e.clientX, targetIndex: -1 }
+                          setDragging(true)
                         }}
                       >
                         <div>{fieldRender ? fieldRender(field) : field.name}</div>
@@ -701,7 +688,6 @@ function DataTable(props: DataTableProps) {
                             if (!el) {
                               return
                             }
-                            setDragStyle(true, 'col-resize')
                             const rect = el.getBoundingClientRect()
                             resizeRef.current = {
                               field,
@@ -709,6 +695,7 @@ function DataTable(props: DataTableProps) {
                               scrollLeft: scroll.left,
                               width
                             }
+                            setResizing(true)
                           }}
                         ></div>
                       )}
@@ -787,7 +774,7 @@ function DataTable(props: DataTableProps) {
       )}
       {pageSize && (
         <Pagination
-          total={data?.length && pageSize ? Math.ceil(data.length / pageSize) : 1}
+          total={filterData.length && pageSize ? Math.ceil(filterData.length / pageSize) : 1}
           page={page}
           onChangePage={setPage}
         />

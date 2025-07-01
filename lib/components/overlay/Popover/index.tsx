@@ -125,9 +125,7 @@ function Popover(props: PopoverProps) {
 
   const onMouseEnter = () => {
     if (trigger === 'hover') {
-      if (timer.current) {
-        clearTimeout(timer.current)
-      }
+      setTimeout(() => timer.current && clearTimeout(timer.current))
       api.open()
     }
   }

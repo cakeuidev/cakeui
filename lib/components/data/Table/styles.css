@@ -12,20 +12,16 @@
   @apply bottom-0;
 }
 
-.ui-table :is(tr,th,td) {
-  @apply shadow-table-border;
-}
-.ui-table thead tr,
-.ui-table tbody tr:not(:last-child) {
-  @apply shadow-[inset_0_-1px];
-}
-.ui-table tfoot tr {
-  @apply shadow-[inset_0_1px];
-}
-
-.ui-table :is(th,td) {
-  @apply p-2;
-}
 .ui-table th {
   @apply font-normal;
+}
+.ui-table :is(th,td) {
+  @apply p-2 shadow-table-border;
+}
+.ui-table thead th,
+.ui-table tbody tr:not(:last-child) td {
+  @apply shadow-[inset_0_-1px];
+}
+.ui-table tfoot td {
+  @apply shadow-[inset_0_1px];
 }

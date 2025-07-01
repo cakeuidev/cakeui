@@ -113,10 +113,18 @@ function DatePicker(props: DatePickerProps) {
   useEffect(() => {
     setText(formatDate)
     A.current = dayjs(v).isValid() ? dayjs(v).format('A') : 'AM'
-    scrollToActive('smooth')
+    scrollToActive()
   }, [v])
   useEffect(() => {
-    setTimeout(scrollToActive)
+    if (open) {
+      const ob = new MutationObserver(() => {
+        if (timeEl.current) {
+          scrollToActive('instant')
+        }
+      })
+      ob.observe(document.body, { childList: true })
+      return () => ob.disconnect()
+    }
   }, [open])
 
   const changeValue = (date: dayjs.Dayjs | null) => {
@@ -156,11 +164,13 @@ function DatePicker(props: DatePickerProps) {
       changeValue(newValue)
     }
   }
-  const scrollToActive = (behavior?: ScrollBehavior) => {
-    const els = document.querySelectorAll('.ui-date-picker-time-active')
-    for (let i = 0; i < els.length; i++) {
-      els[i].scrollIntoView({ behavior, block: 'start' })
-    }
+  const scrollToActive = (behavior: ScrollBehavior = 'smooth') => {
+    requestAnimationFrame(() => {
+      const els = document.querySelectorAll('.ui-date-picker-time-active')
+      for (let i = 0; i < els.length; i++) {
+        els[i].scrollIntoView({ behavior, block: 'start' })
+      }
+    })
   }
   const renderTimePicker = () => {
     if (!calendarEl.current || !timeEl.current) {

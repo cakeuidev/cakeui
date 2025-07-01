@@ -1,6 +1,6 @@
 {
   "name": "@cakeui/react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React UI library designed for intuitive use while providing deep customization capabilities.",
   "license": "MIT",
   "author": "cakeui",
@@ -17,8 +17,7 @@
   },
   "scripts": {
     "dev": "node index.js",
-    "build": "npm run build:src && npm run build:lib",
-    "build:src": "vite build && vite build -c vite.ssr.config.ts",
+    "build": "vite build && vite build -c vite.ssr.config.ts",
     "build:lib": "npm run build:utils && npm run build:hooks && npm run build:router && npm run build:components",
     "build:utils": "vite build -c vite.lib.config.ts",
     "build:hooks": "vite build -c vite.lib.config.ts",

@@ -3,7 +3,7 @@
 }
 
 .ui-calendar-title {
-  @apply flex items-center font-medium;
+  @apply font-medium flex items-center;
 }
 .ui-calendar-month {
   @apply grow-1 text-center;
@@ -21,7 +21,7 @@
 }
 .ui-calendar-week > span,
 .ui-calendar-days > span {
-  @apply rounded-lg min-h-8 min-w-8 overflow-auto inline-flex items-center justify-center;
+  @apply min-h-8 min-w-8 overflow-auto inline-flex items-center justify-center rounded-lg;
 }
 .ui-calendar-days > span:hover {
   @apply cursor-pointer bg-light;

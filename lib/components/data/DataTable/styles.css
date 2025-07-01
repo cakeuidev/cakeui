@@ -7,6 +7,9 @@
 .ui-data-table-rendering :is(th,td) > div {
   @apply !w-fit;
 }
+.ui-data-table:not(.ui-data-table-rendering) :is(thead,tbody,tfoot) {
+  @apply block;
+}
 .ui-data-table:not(.ui-data-table-rendering) tbody {
   @apply relative;
 }
@@ -15,6 +18,16 @@
 }
 .ui-data-table-rendering :is(th,td):not(:last-child) > div:first-child {
   @apply shadow-none;
+}
+.ui-data-table-resizing .ui-data-table-group {
+  @apply cursor-col-resize;
+}
+.ui-data-table-dragging .ui-data-table-group {
+  @apply cursor-grabbing;
+}
+.ui-data-table-resizing .ui-data-table-group > div,
+.ui-data-table-dragging .ui-data-table-group > div {
+  @apply pointer-events-none select-none;
 }
 
 .ui-data-table-group {
@@ -50,13 +63,6 @@
 }
 .ui-data-table thead th {
   @apply cursor-pointer relative;
-}
-.ui-data-table thead th,
-.ui-data-table tbody tr:not(:last-child) td {
-  @apply shadow-[inset_0_-1px];
-}
-.ui-data-table tfoot td {
-  @apply shadow-[inset_0_1px];
 }
 .ui-data-table tbody td {
   @apply leading-0;

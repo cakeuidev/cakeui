@@ -1,13 +1,19 @@
 .ui-carousel {
   @apply w-full flex flex-col gap-3;
 }
+.ui-carousel-dragging .ui-carousel-body {
+  @apply cursor-grabbing;
+}
+.ui-carousel-dragging .ui-carousel-group {
+  @apply pointer-events-none select-none;
+}
 
 .ui-carousel-body {
   @apply relative grow-1;
 }
 
 .ui-carousel-group {
-  @apply touch-pan-y snap-x snap-mandatory relative h-full overflow-hidden flex gap-3;
+  @apply touch-pan-y h-full overflow-hidden flex gap-3;
 }
 .ui-carousel-group::before,
 .ui-carousel-group::after {
@@ -15,7 +21,7 @@
 }
 
 .ui-carousel-item {
-  @apply shrink-0 touch-pan-y snap-center relative p-3 w-full rounded-lg border border-light;
+  @apply shrink-0 touch-pan-y relative p-3 w-full rounded-lg border border-light;
 }
 .ui-carousel-center {
   @apply pointer-events-none absolute top-1/2 left-1/2 -translate-1/2 h-[1px] w-[1px];
