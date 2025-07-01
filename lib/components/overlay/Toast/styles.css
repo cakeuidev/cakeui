@@ -1,0 +1,69 @@
+.ui-toast {
+  @apply fixed z-9999 bottom-3 right-3 w-80 max-w-screen;
+}
+.ui-toast-top-left {
+  @apply top-3 left-3;
+}
+.ui-toast-top-right {
+  @apply top-3 right-3;
+}
+.ui-toast-bottom-left {
+  @apply bottom-3 left-3;
+}
+.ui-toast-bottom-right {
+  @apply bottom-3 right-3;
+}
+
+.ui-toast-item {
+  @apply absolute right-0
+    py-2 px-3 w-80 max-w-screen flex items-start gap-2
+    rounded-lg shadow-lg border border-light bg-background;
+  @apply transition-[opacity,translate,top,bottom,scale] duration-300;
+  @apply opacity-100 translate-0;
+}
+.ui-toast-top-left > .ui-toast-close,
+.ui-toast-bottom-left > .ui-toast-close {
+  @apply opacity-0 -translate-x-full;
+}
+.ui-toast-top-right > .ui-toast-close,
+.ui-toast-bottom-right > .ui-toast-close {
+  @apply opacity-0 translate-x-full;
+}
+
+.ui-toast-item > .ui-toast-icon {
+  @apply h-6;
+}
+.ui-toast-info > .ui-toast-icon {
+  @apply text-info;
+}
+.ui-toast-success > .ui-toast-icon {
+  @apply text-success;
+}
+.ui-toast-error > .ui-toast-icon {
+  @apply text-error;
+}
+.ui-toast-warning > .ui-toast-icon {
+  @apply text-warning;
+}
+.ui-toast-loading > .ui-toast-icon {
+  @apply text-info animate-spin;
+}
+
+.ui-toast-body {
+  @apply grow-1 overflow-auto flex flex-col gap-1;
+}
+
+.ui-toast-title {
+  @apply flex items-center gap-3;
+}
+.ui-toast-title > span:not(.ui-toast-icon) {
+  @apply grow-1 overflow-auto;
+  scrollbar-width: none;
+}
+.ui-toast-title > .ui-toast-icon {
+  @apply cursor-pointer text-gray hover:text-deep;
+}
+
+.ui-toast-description {
+  @apply text-gray;
+}

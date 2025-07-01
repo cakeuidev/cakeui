@@ -1,0 +1,143 @@
+.ui-data-table {
+  @apply relative w-full overflow-hidden flex flex-col gap-2 items-center;
+}
+.ui-data-table-gridlines :is(th,td):not(:last-child) > div:first-child {
+  @apply shadow-[inset_-1px_0] shadow-table-border;
+}
+.ui-data-table-rendering :is(th,td) > div {
+  @apply !w-fit;
+}
+.ui-data-table:not(.ui-data-table-rendering) tbody {
+  @apply relative;
+}
+.ui-data-table:not(.ui-data-table-rendering) tbody tr {
+  @apply absolute w-full flex;
+}
+.ui-data-table-rendering :is(th,td):not(:last-child) > div:first-child {
+  @apply shadow-none;
+}
+
+.ui-data-table-group {
+  @apply grow-1 w-full overflow-auto flex border border-table-border;
+}
+.ui-data-table-group > div {
+  @apply h-fit min-h-full;
+}
+.ui-data-table-left,
+.ui-data-table-right {
+  @apply sticky z-10;
+}
+.ui-data-table-left {
+  @apply left-0;
+}
+.ui-data-table-right {
+  @apply right-0;
+}
+.ui-data-table-main thead {
+  @apply z-9;
+}
+.ui-data-table-left th:last-child,
+.ui-data-table-right th:first-child,
+.ui-data-table-main th:last-child {
+  @apply overflow-x-hidden;
+}
+.ui-data-table-shadow {
+  @apply shadow-[0_0_10px_rgba(0,0,0,0.3)];
+}
+
+.ui-data-table table {
+  @apply max-w-[unset] overflow-visible rounded-none border-0 outline outline-table-border;
+}
+.ui-data-table thead th {
+  @apply cursor-pointer relative;
+}
+.ui-data-table thead th,
+.ui-data-table tbody tr:not(:last-child) td {
+  @apply shadow-[inset_0_-1px];
+}
+.ui-data-table tfoot td {
+  @apply shadow-[inset_0_1px];
+}
+.ui-data-table tbody td {
+  @apply leading-0;
+}
+.ui-data-table :is(th,td) {
+  @apply p-0 text-left whitespace-nowrap;
+}
+.ui-data-table :is(th,td) > div:first-child {
+  @apply px-2 overflow-hidden inline-flex items-center gap-1;
+  scrollbar-width: none;
+}
+.ui-data-table :is(th,td)[align=left] div {
+  @apply justify-start text-left;
+}
+.ui-data-table :is(th,td)[align=right] div {
+  @apply justify-end text-right;
+}
+.ui-data-table :is(th,td)[align=center] div {
+  @apply justify-center text-center;
+}
+
+.ui-data-table-hover {
+  @apply bg-table-hover;
+}
+.ui-data-table-selected {
+  @apply bg-table-selected;
+}
+
+.ui-data-table-field > div:first-child {
+  @apply grow-1 h-full overflow-hidden inline-flex items-center;
+  scrollbar-width: none;
+}
+.ui-data-table-sort,
+.ui-data-table-filter {
+  @apply shrink-0 cursor-pointer relative h-6 w-3 overflow-hidden rounded-full text-gray hover:text-deep;
+}
+.ui-data-table-sort > span,
+.ui-data-table-filter > span {
+  @apply absolute left-1/2 -translate-x-1/2;
+}
+.ui-data-table-sort > span:first-child {
+  @apply bottom-1/2 translate-y-1.5;
+}
+.ui-data-table-sort > span:last-child {
+  @apply top-1/2 -translate-y-1.5;
+}
+.ui-data-table-sort[data-sort=asc] > span:first-child,
+.ui-data-table-sort[data-sort=desc] > span:last-child {
+  @apply text-info;
+}
+.ui-data-table-filter > span {
+  @apply top-1/2 -translate-y-1/2;
+}
+.ui-data-table-filter-active > span {
+  @apply text-info;
+}
+.ui-data-table-filter-popover {
+  @apply p-0 w-40;
+}
+.ui-data-table-filter-body {
+  @apply p-1 flex flex-col gap-1;
+}
+.ui-data-table-filter-body .ui-checkbox {
+  @apply my-0.5 px-1 w-fit min-w-full;
+}
+.ui-data-table-filter-action {
+  @apply p-1 flex w-full justify-between border-t border-light;
+}
+.ui-data-table-filter-action .ui-button {
+  @apply py-0 px-2 border-none;
+}
+.ui-data-table-filter-action .ui-button:not(:disabled) {
+  @apply text-info;
+}
+.ui-data-table-resize {
+  @apply cursor-col-resize absolute z-10 top-0 h-full flex justify-center;
+}
+
+.ui-data-table-split-line {
+  @apply pointer-events-none absolute bg-info;
+}
+.ui-data-table-drag-block {
+  @apply pointer-events-none absolute z-10 top-0 bg-default opacity-10;
+}

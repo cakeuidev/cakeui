@@ -1,0 +1,52 @@
+.ui-drawer {
+  @apply fixed z-9999
+    max-h-screen max-w-screen flex flex-col
+    shadow-lg border-light bg-background;
+  @apply transition-[opacity,translate] duration-300;
+  @apply opacity-100 translate-0;
+}
+.ui-drawer-close {
+  @apply opacity-0;
+}
+.ui-drawer-left {
+  @apply top-0 left-0 h-screen min-w-80 border-r;
+}
+.ui-drawer-left.ui-drawer-close {
+  @apply -translate-x-full;
+}
+.ui-drawer-right {
+  @apply top-0 right-0 h-screen min-w-80 border-l;
+}
+.ui-drawer-right.ui-drawer-close {
+  @apply translate-x-full;
+}
+.ui-drawer-top {
+  @apply top-0 left-0 w-screen border-b;
+}
+.ui-drawer-top.ui-drawer-close {
+  @apply -translate-y-full;
+}
+.ui-drawer-bottom {
+  @apply bottom-0 left-0 w-screen border-t;
+}
+.ui-drawer-bottom.ui-drawer-close {
+  @apply translate-y-full;
+}
+
+.ui-drawer-title {
+  @apply shrink-0 font-medium py-2 px-3 flex items-center gap-3 border-b border-light;
+}
+.ui-drawer-title > span:not(.ui-drawer-icon) {
+  @apply grow-1 overflow-auto;
+}
+.ui-drawer-title > .ui-drawer-icon {
+  @apply cursor-pointer text-gray hover:text-deep;
+}
+
+.ui-drawer-content {
+  @apply grow-1 py-2 px-3 overflow-auto overscroll-contain;
+}
+
+.ui-drawer-footer {
+  @apply shrink-0 py-2 px-3 border-t border-light;
+}

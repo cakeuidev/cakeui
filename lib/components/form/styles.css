@@ -1,0 +1,276 @@
+.ui-input,
+.ui-input input {
+  @apply outline-info accent-info;
+}
+.ui-input {
+  @apply inline-flex items-center gap-1;
+}
+.ui-input:has(> input[disabled]),
+.ui-input:has(> textarea[disabled]) {
+  @apply pointer-events-none border-light text-gray;
+}
+.ui-input input,
+.ui-input textarea {
+  @apply w-full placeholder:text-gray;
+}
+
+.ui-input-box {
+  @apply py-1 px-2 w-60 max-w-full rounded-lg border border-gray;
+}
+.ui-input-box:hover {
+  @apply outline-1 -outline-offset-1;
+}
+.ui-input-box:focus-within {
+  @apply outline-2 -outline-offset-2;
+}
+.ui-input-box input,
+.ui-input-box textarea {
+  @apply outline-none;
+}
+
+.ui-input-icon,
+.ui-input-button {
+  @apply h-5 w-5 text-gray;
+}
+.ui-input-button {
+  @apply cursor-pointer hover:text-deep;
+}
+.ui-input-clearable:hover:has(> input:not([value=""])) > .ui-input-icon,
+.ui-input-clearable:has(> input[value=""]) > .ui-input-button,
+.ui-input-clearable:not(:hover) > .ui-input-button {
+  @apply hidden;
+}
+
+.ui-input-number > input {
+  @apply text-center;
+}
+.ui-input-number > input::-webkit-inner-spin-button {
+  @apply appearance-none;
+}
+
+.ui-textarea {
+  @apply p-0;
+}
+.ui-textarea textarea {
+  @apply py-1 px-2 scroll-px-2 min-h-8 whitespace-pre;
+  scrollbar-width: none;
+}
+
+.ui-radio,
+.ui-checkbox {
+  @apply cursor-pointer gap-2;
+}
+.ui-radio > input,
+.ui-checkbox > input {
+  @apply grow-0 shrink-0 cursor-pointer h-4 w-4;
+}
+.ui-radio > span,
+.ui-checkbox > span {
+  @apply grow-1 overflow-auto whitespace-nowrap;
+  scrollbar-width: none;
+}
+.ui-radio-group,
+.ui-checkbox-group {
+  @apply flex-wrap gap-x-4;
+}
+
+.ui-switch {
+  @apply relative h-6 w-11;
+}
+.ui-switch > input {
+  @apply h-full;
+}
+.ui-switch > input + span {
+  @apply cursor-pointer absolute top-0 left-0 h-full w-full rounded-full bg-gray;
+  @apply transition-all duration-300;
+}
+.ui-switch > input:disabled + span {
+  @apply bg-light;
+}
+.ui-switch > input:checked + span {
+  @apply bg-info;
+}
+.ui-switch > input + span::after {
+  @apply content-[''] absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white;
+  @apply transition-all duration-300;
+}
+.ui-switch > input:checked + span::after {
+  @apply left-[calc(100%_-_2px)] -translate-x-full;
+}
+
+.ui-slider {
+  @apply w-60 relative;
+}
+.ui-slider > input {
+  @apply appearance-none cursor-pointer;
+}
+.ui-slider > input::-webkit-slider-thumb {
+  @apply appearance-none relative h-4 w-4 rounded-full border-2 border-info bg-white;
+}
+.ui-slider-bg {
+  @apply pointer-events-none absolute left-0 top-1/2 -translate-y-1/2
+    h-2 w-full overflow-hidden rounded-lg bg-light;
+}
+.ui-slider-bg > div {
+  @apply h-full bg-info;
+}
+
+.ui-select {
+  @apply relative;
+}
+.ui-select > div {
+  @apply w-full;
+}
+.ui-select > .ui-dropdown {
+  @apply pointer-events-none absolute bottom-0 left-0 h-full w-full;
+}
+.ui-select > .ui-input-icon {
+  @apply transition-[transform] duration-500;
+}
+.ui-select-open > .ui-input-icon {
+  @apply rotate-x-180;
+}
+.ui-select:not(.ui-select-open) .ui-select-search.ui-select-has-value::placeholder {
+  @apply text-default;
+}
+.ui-select-search:disabled::placeholder {
+  @apply !text-gray;
+}
+.ui-select-dropdown {
+  @apply p-0;
+}
+.ui-select-options {
+  @apply p-1 scroll-p-1 flex flex-col max-h-screen overflow-auto;
+}
+.ui-select-options > div {
+  @apply py-1 px-2 flex items-center gap-3 rounded-lg;
+}
+.ui-select-options > div > span:not(.ui-input-icon) {
+  @apply grow-1 overflow-auto;
+  scrollbar-width: none;
+}
+.ui-select-options > div:not(.ui-select-active) > .ui-input-icon {
+  @apply invisible;
+}
+.ui-select-hover {
+  @apply cursor-pointer bg-light;
+}
+.ui-select-active,
+.ui-select-active > .ui-input-icon {
+  @apply text-info;
+}
+.ui-select-disabled {
+  @apply select-none text-gray;
+}
+.ui-select-no-data {
+  @apply py-2 px-3 text-center text-gray;
+}
+.ui-select-tags {
+  @apply flex flex-wrap gap-1;
+}
+.ui-select-tags > input {
+  @apply w-0;
+}
+.ui-select-tag {
+  @apply px-1 max-w-full flex items-center gap-1 rounded-lg bg-light;
+}
+.ui-select-tag > span:not(.ui-input-icon) {
+  @apply grow-1 overflow-auto;
+  scrollbar-width: none;
+}
+
+.ui-date-picker > div {
+  @apply w-full;
+}
+.ui-date-picker-popover {
+  @apply p-0;
+}
+.ui-date-picker-body {
+  @apply flex items-start;
+}
+.ui-date-picker-body .ui-calendar {
+  @apply border-none;
+}
+.ui-date-picker-body .ui-calendar .ui-calendar-active:not(.ui-disabled) {
+  @apply bg-info text-white;
+}
+.ui-date-picker-body .ui-calendar + .ui-date-picker-time-options {
+  @apply p-2 border-l border-light;
+}
+.ui-date-picker-time-options {
+  @apply p-1 w-full flex text-center;
+}
+.ui-date-picker-time-unit {
+  @apply grow-1 h-full min-w-10 overflow-auto;
+  scrollbar-width: none;
+}
+.ui-date-picker-time-unit > div {
+  @apply cursor-pointer py-0.5 rounded-lg hover:bg-light;
+}
+.ui-date-picker-time-unit > div:last-child {
+  @apply pointer-events-none h-[calc(100%_-_28px)];
+}
+.ui-date-picker-time-active {
+  @apply text-info;
+}
+.ui-date-picker-footer {
+  @apply p-2 border-t border-light;
+}
+.ui-date-picker-action {
+  @apply flex gap-2;
+}
+.ui-date-picker-button {
+  @apply py-0 px-2 border-none;
+}
+.ui-date-picker-button:not(:disabled) {
+  @apply text-info;
+}
+
+.ui-color-picker > input {
+  @apply cursor-pointer h-6 w-6;
+}
+
+.ui-upload {
+  @apply flex-col items-start;
+}
+.ui-upload > input {
+  @apply hidden;
+}
+.ui-upload-trigger {
+  @apply cursor-pointer;
+}
+.ui-upload-trigger > .ui-upload-button {
+  @apply inline-flex items-center gap-1 border-gray;
+}
+.ui-upload-list {
+  @apply flex flex-wrap gap-1;
+}
+.ui-upload-item {
+  @apply px-1 max-w-full flex items-center gap-1 rounded-lg bg-light;
+}
+.ui-upload-item > span:not(.ui-input-icon) {
+  @apply grow-1 overflow-auto;
+  scrollbar-width: none;
+}
+
+.ui-form {
+  @apply w-full grid;
+}
+.ui-form-button {
+  @apply border-none bg-info text-white;
+}
+.ui-form-item .ui-input:not(.ui-radio,.ui-checkbox,.ui-switch,.ui-color-picker) {
+  @apply w-full;
+}
+.ui-form-input {
+  @apply min-h-8.5;
+}
+.ui-form-item-info {
+  @apply min-h-6 text-sm;
+}
+.ui-form-item-error .ui-input-box {
+  @apply outline-error outline-1 -outline-offset-1;
+}
+.ui-form-item-error > .ui-form-item-info {
+  @apply text-error;
+}
