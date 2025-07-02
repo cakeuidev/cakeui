@@ -62,7 +62,7 @@
 }
 .ui-radio > input,
 .ui-checkbox > input {
-  @apply grow-0 shrink-0 cursor-pointer h-4 w-4;
+  @apply grow-0 shrink-0 cursor-pointer h-4.5 w-4.5;
 }
 .ui-radio > span,
 .ui-checkbox > span {
@@ -75,10 +75,13 @@
 }
 
 .ui-switch {
-  @apply relative h-6 w-11;
+  @apply relative h-6 w-11 rounded-full;
+}
+.ui-switch:focus-within {
+  @apply outline-2 outline-offset-1;
 }
 .ui-switch > input {
-  @apply h-full;
+  @apply opacity-0;
 }
 .ui-switch > input + span {
   @apply cursor-pointer absolute top-0 left-0 h-full w-full rounded-full bg-gray;

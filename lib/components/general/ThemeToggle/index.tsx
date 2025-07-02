@@ -1,63 +1,47 @@
-import { useEffect } from 'react'
-import { cls } from '../../../utils/index.js'
-import { useEventListener, useLocalStorage } from '../../../hooks/index.js'
-import Icon from '../Icon/index.js'
+import { useEffect, useState } from 'react'
+import { useEventListener, useFunction } from '../../../hooks/index.js'
 
-export type ThemeToggleProps = React.JSX.IntrinsicElements['span'] & {
-  localStorageKey?: string          // default: 'theme'
-  defaultTheme?: ThemeToggleOptions // default: 'light'
-  onChangeTheme?: (theme: ThemeToggleOptions) => any
-}
 export type ThemeToggleOptions = 'light' | 'dark'
 
-function ThemeToggle(props: ThemeToggleProps) {
-  const {
-    localStorageKey = 'theme',
-    defaultTheme = 'light',
-    onChangeTheme,
-    ...rest
-  } = props
-
-  const [theme, setTheme] = useLocalStorage(localStorageKey, defaultTheme)
+function useThemeToggle(
+  localStorageKey: string = 'theme'
+): [ThemeToggleOptions, () => any] {
+  const getTheme = () => {
+    if (typeof window === 'undefined') {
+      return 'light'
+    }
+    const mediaQueryList = matchMedia("(prefers-color-scheme: dark)")
+    const theme = localStorage.getItem(localStorageKey)
+    return theme === 'dark' || theme !== 'light' && mediaQueryList.matches ? 'dark' : 'light'
+  }
+  const [theme, setTheme] = useState<ThemeToggleOptions>(getTheme)
 
   useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
+    const mediaQueryList = matchMedia('(prefers-color-scheme: dark)')
+    const toggleDark = () => {
+      const theme = getTheme()
+      setTheme(theme)
+      document.documentElement.classList.toggle('dark', theme === 'dark')
     }
-    onChangeTheme?.(theme)
-    dispatchEvent(new CustomEvent('ui-theme-change', { detail: { theme } }))
-  }, [theme])
+    toggleDark()
+    mediaQueryList.addEventListener('change', toggleDark)
+    return () => mediaQueryList.removeEventListener('change', toggleDark)
+  }, [])
+
+  const toggle = useFunction(() => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark'
+    setTheme(newTheme)
+    document.documentElement.classList.toggle('dark', newTheme === 'dark')
+    localStorage.setItem(localStorageKey, newTheme)
+    dispatchEvent(new CustomEvent('ui-theme-change', { detail: { theme: newTheme } }))
+  })
 
   useEventListener('ui-theme-change', (e) => {
     const event = e as CustomEvent<{ theme: ThemeToggleOptions }>
     setTheme(event.detail.theme)
   })
 
-  return rest.children ? (
-    <span
-      {...rest}
-      className={cls('ui-theme-toggle', rest.className)}
-      onClick={(e) => {
-        setTheme(theme === 'dark' ? 'light' : 'dark')
-        rest.onClick?.(e)
-      }}
-    >
-      {rest.children}
-    </span>
-  ) : (
-    <Icon
-      {...rest}
-      className={cls('ui-theme-toggle', rest.className)}
-      onClick={(e) => {
-        setTheme(theme === 'dark' ? 'light' : 'dark')
-        rest.onClick?.(e)
-      }}
-    >
-      {theme === 'dark' ? 'light_mode' : 'dark_mode'}
-    </Icon>
-  )
+  return [theme, toggle]
 }
 
-export default ThemeToggle
+export default useThemeToggle

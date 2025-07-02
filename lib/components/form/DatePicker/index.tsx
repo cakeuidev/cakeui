@@ -208,6 +208,7 @@ function DatePicker(props: DatePickerProps) {
       <input {...rest} type='hidden' ref={ref} value={dayjs(v).isValid() ? dayjs(v).format() : ''} />
       <div>
         <input
+          inputMode='none'
           ref={inputEl}
           value={text}
           onChange={(e) => setText(e.target.value)}

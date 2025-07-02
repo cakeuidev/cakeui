@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { debounce, throttle } from '../utils/index.js'
 
-const DocumentTitle = globalThis.document?.title
+const DocumentTitle = typeof window !== 'undefined' ? document.title : ''
 
 export function useDocumentTitle(title: string): void {
   useEffect(() => {
@@ -245,15 +245,24 @@ export function useDebounce<T extends (...args: Parameters<T>) => any>(
 
 export function useLocalStorage<T>(
   key: string,
-  initialState?: T | (() => T)
+  defaultValue?: T
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const [value, setValue] = useState(() =>
-    JSON.parse(globalThis.localStorage?.getItem(key) ?? 'null') ?? initialState
-  )
+  const [value, setValue] = useState(() => {
+    if (typeof window === 'undefined') {
+      return null
+    }
+    let v: any = localStorage.getItem(key)
+    try {
+      v = JSON.parse(v)
+    } catch {}
+    return v ?? defaultValue
+  })
 
   useEffect(() => {
-    if (value !== void 0) {
+    if (typeof value === 'object') {
       localStorage.setItem(key, JSON.stringify(value))
+    } else if (value !== void 0) {
+      localStorage.setItem(key, value)
     } else {
       localStorage.removeItem(key)
     }
@@ -264,17 +273,26 @@ export function useLocalStorage<T>(
 
 export function useSessionStorage<T>(
   key: string,
-  initialState?: T | (() => T)
+  defaultValue?: T
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const [value, setValue] = useState(() =>
-    JSON.parse(globalThis.sessionStorage?.getItem(key) ?? 'null') ?? initialState
-  )
+  const [value, setValue] = useState(() => {
+    if (typeof window === 'undefined') {
+      return null
+    }
+    let v: any = sessionStorage.getItem(key)
+    try {
+      v = JSON.parse(v)
+    } catch {}
+    return v ?? defaultValue
+  })
 
   useEffect(() => {
-    if (value !== void 0) {
-      sessionStorage.setItem(key, JSON.stringify(value))
+    if (typeof value === 'object') {
+      localStorage.setItem(key, JSON.stringify(value))
+    } else if (value !== void 0) {
+      localStorage.setItem(key, value)
     } else {
-      sessionStorage.removeItem(key)
+      localStorage.removeItem(key)
     }
   }, [value])
 

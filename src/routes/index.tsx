@@ -2,9 +2,7 @@ import React, { use, useEffect, useState } from 'react'
 import { AppContext } from '../App'
 import { useRouter } from '../../lib/router'
 import { useDocumentTitle } from '../../lib/hooks'
-import { Drawer, Icon, Layout, Menu, ThemeToggle } from '../../lib/components'
-import CakeSVG from '../assets/cake.svg'
-import CakeWhiteSVG from '../assets/cake-white.svg'
+import { Drawer, Icon, Layout, Menu, useThemeToggle } from '../../lib/components'
 import GithubSVG from '../assets/github.svg'
 import GithubWhiteSVG from '../assets/github-white.svg'
 
@@ -93,7 +91,7 @@ function Home(props: React.PropsWithChildren) {
   const { rwd, windowSize, firstRender } = use(AppContext)!
   const { pathname, navigate } = useRouter()!
   const [menuOpen, setMenuOpen] = useState(false)
-  const [theme, setTheme] = useState('light')
+  const [theme, toggleTheme] = useThemeToggle('theme')
 
   useDocumentTitle(Title + ' - ' +
     pathname.split('/').slice(-1)[0].replace(/(?:^|-)([a-z])/g, (_, c) => c.toUpperCase())
@@ -138,8 +136,8 @@ function Home(props: React.PropsWithChildren) {
         <div>
           {windowSize.width >= rwd.md ? (
             <>
-              <a className='app-home' href='/' translate='no'>
-                <img src={theme === 'light' ? CakeSVG : CakeWhiteSVG} />
+              <a className='app-home' href='/'>
+                <img src={theme === 'light' ? '/favicon.svg' : '/favicon-white.svg'} />
                 <span>{Title}</span>
               </a>
               <Menu
@@ -175,7 +173,9 @@ function Home(props: React.PropsWithChildren) {
           <a className='app-icon' href={Repo} target='_blank'>
             <img src={theme === 'light' ? GithubSVG : GithubWhiteSVG} />
           </a>
-          <ThemeToggle onChangeTheme={setTheme} />
+          <Icon className='app-icon' onClick={toggleTheme}>
+            {theme === 'light' ? 'light_mode' : 'dark_mode'}
+          </Icon>
         </div>
       </Layout.Header>
       <Layout>

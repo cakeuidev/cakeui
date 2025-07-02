@@ -19,8 +19,9 @@ function Icon(props: IconProps) {
   const [loaded, setLoaded] = useState(Loaded.get(family))
 
   useEffect(() => {
-    if (!rest.children || Loaded.get(family)) {
-      setLoaded(true)
+    const loaded = Loaded.get(family)
+    if (!rest.children || loaded) {
+      setLoaded(loaded)
       return
     }
     setLoaded(false)
@@ -35,7 +36,7 @@ function Icon(props: IconProps) {
     const maxRetries = 10
     const check = () => {
       if (document.fonts.check(`1em "${family}"`)) {
-        setLoaded(true)
+        setTimeout(() => setLoaded(true), 50)
       } else if (retries < maxRetries) {
         setTimeout(check, retries * 100)
         retries += 1

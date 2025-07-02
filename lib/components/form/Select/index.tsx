@@ -190,6 +190,7 @@ function Select(props: SelectProps) {
           </React.Fragment>
         ))}
         <input
+          inputMode='none'
           ref={inputEl}
           className={cls('ui-select-search', {
             'ui-select-has-value': !multiple && v

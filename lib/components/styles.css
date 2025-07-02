@@ -4,7 +4,6 @@
 @import "./general/Divider/styles.css";
 @import "./general/Icon/styles.css";
 @import "./general/Layout/styles.css";
-@import "./general/ThemeToggle/styles.css";
 
 @import "./overlay/ContextMenu/styles.css";
 @import "./overlay/Dialog/styles.css";
@@ -81,7 +80,7 @@ body {
   @apply bg-background text-default;
 }
 h1, h2, h3, h4, h5, h6 {
-  @apply mb-2 font-medium;
+  @apply font-medium mb-2;
 }
 h1 {
   @apply text-[2em];

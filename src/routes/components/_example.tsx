@@ -206,27 +206,34 @@ type LayoutSiderProps = React.JSX.IntrinsicElements['div']
       {
         name: 'Example',
         Component: () => {
+          const [theme, toggle] = UI.useThemeToggle()
+
           return (
-            <UI.ThemeToggle />
+            <UI.Icon style={{ cursor: 'pointer' }} onClick={toggle}>
+              {theme === 'light' ? 'light_mode' : 'dark_mode'}
+            </UI.Icon>
           )
         },
         code: `
-import { ThemeToggle } from '@cakeui/react'
+import { Icon, useThemeToggle } from '@cakeui/react'
 
 export default () => {
+  const [theme, toggle] = useThemeToggle()
+
   return (
-    <ThemeToggle />
+    <Icon style={{ cursor: 'pointer' }} onClick={toggle}>
+      {theme === 'light' ? 'light_mode' : 'dark_mode'}
+    </Icon>
   )
 }
         `
       }
     ],
     props: `
-type ThemeToggleProps = React.JSX.IntrinsicElements['span'] & {
-  localStorageKey?: string          // default: 'theme'
-  defaultTheme?: ThemeToggleOptions // default: 'light'
-  onChangeTheme?: (theme: ThemeToggleOptions) => any
-}
+function useThemeToggle(
+  localStorageKey?: string // default: 'light
+): [ThemeToggleOptions, () => any]
+
 type ThemeToggleOptions = 'light' | 'dark'
     `
   },
@@ -2345,7 +2352,7 @@ type SelectOption = {
         name: 'Date',
         Component: () => {
           return (
-            <UI.DatePicker type='datetime' />
+            <UI.DatePicker />
           )
         },
         code: `

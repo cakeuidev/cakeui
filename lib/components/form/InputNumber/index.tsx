@@ -42,6 +42,7 @@ function InputNumber(props: InputNumberProps) {
         <Icon className='ui-input-button' onClick={() => step(-1)}>remove</Icon>
       ))}
       <input
+        inputMode='decimal'
         {...rest}
         type='number'
         ref={ref}

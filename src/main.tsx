@@ -10,3 +10,14 @@ if ((window as any).__SSR__) {
 } else {
   createRoot(root).render(<App />)
 }
+
+const mediaQueryList = matchMedia('(prefers-color-scheme: dark)')
+const changeFavicon = () => {
+  const favicon = document.querySelector<HTMLLinkElement>('link[rel=icon]')
+  if (favicon) {
+    favicon.href = mediaQueryList.matches ? '/favicon-white.svg' : '/favicon.svg'
+  }
+}
+changeFavicon()
+mediaQueryList.addEventListener('change', changeFavicon)
+

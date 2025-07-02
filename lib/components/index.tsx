@@ -4,7 +4,7 @@ export { default as Button } from './general/Button'
 export { default as Divider } from './general/Divider'
 export { default as Icon } from './general/Icon'
 export { default as Layout } from './general/Layout'
-export { default as ThemeToggle } from './general/ThemeToggle'
+export { default as useThemeToggle } from './general/ThemeToggle'
 
 export { default as ContextMenu } from './overlay/ContextMenu'
 export { default as Dialog } from './overlay/Dialog'
