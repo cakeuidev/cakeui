@@ -11,9 +11,9 @@ export type MenuProps = React.JSX.IntrinsicElements['div'] & {
   onChangeOpenKeys?: (keys: string[]) => any
   activeKey?: string
   onChangeActiveKey?: (key: string) => any
-  type?: 'horizontal' | 'vertical'      // default: 'horizontal'
-  inline?: boolean                      // default: false
-  indent?: number                       // default: 16
+  type?: 'horizontal' | 'vertical'  // default: 'horizontal'
+  inline?: boolean                  // default: false
+  indent?: number                   // default: 16
 }
 export type MenuItem = {
   key: string

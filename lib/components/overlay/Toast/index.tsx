@@ -94,8 +94,14 @@ function Toast(props: ToastProps) {
         [`ui-toast-${position}`]: position
       }, rest.className)}
       ref={ref}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={(e) => {
+        setHover(true)
+        rest.onMouseEnter?.(e)
+      }}
+      onMouseLeave={(e) => {
+        setHover(false)
+        rest.onMouseLeave?.(e)
+      }}
     >
       <ToastContext.Provider value={{ render }}>
         {rest.children}

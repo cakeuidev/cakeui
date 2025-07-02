@@ -231,10 +231,11 @@ export default () => {
     ],
     props: `
 function useThemeToggle(
-  localStorageKey?: string // default: 'light
-): [ThemeToggleOptions, () => any]
+  localStorageKey?: string // default: 'theme'
+): [ThemeToggleValue, ThemeToggleFunction]
 
-type ThemeToggleOptions = 'light' | 'dark'
+type ThemeToggleValue = 'light' | 'dark'
+type ThemeToggleFunction = () => void
     `
   },
   ContextMenu: {
@@ -420,7 +421,7 @@ export default () => {
 type DropdownProps = React.JSX.IntrinsicElements['div'] & {
   open?: boolean
   onChangeOpen?: (open: boolean) => any
-  trigger?: 'hover' | 'click' | 'custom' // default: 'hover'
+  trigger?: 'hover' | 'click'            // default: 'hover'
   position?: 'left' | 'right' | 'center' // default: 'left'
   offset?: number                        // default: 4
 }
@@ -591,9 +592,9 @@ type MenuProps = React.JSX.IntrinsicElements['div'] & {
   onChangeOpenKeys?: (keys: string[]) => any
   activeKey?: string
   onChangeActiveKey?: (key: string) => any
-  type?: 'horizontal' | 'vertical'      // default: 'horizontal'
-  inline?: boolean                      // default: false
-  indent?: number                       // default: 16
+  type?: 'horizontal' | 'vertical' // default: 'horizontal'
+  inline?: boolean                 // default: false
+  indent?: number                  // default: 16
 }
 type MenuItem = {
   key: string
@@ -722,7 +723,7 @@ export default () => {
 type PopoverProps = React.JSX.IntrinsicElements['div'] & {
   open?: boolean
   onChangeOpen?: (open: boolean) => any
-  trigger?: 'hover' | 'click' | 'custom'        // default: 'hover'
+  trigger?: 'hover' | 'click'                   // default: 'hover'
   position?:                                    // default: 'top'
     'top' | 'top-left' | 'top-right' |
     'bottom' | 'bottom-left' | 'bottom-right' |
@@ -1403,8 +1404,7 @@ export default () => {
             ...Array.from({ length: 10 }).map((_, i) => ({
               key: `key${i + 1}`,
               name: `col ${i + 1}`,
-              resizable: true,
-              draggable: true
+              resizable: true
             }))
           ])
           const [data] = useState<UI.DataTableItem[]>(() => (

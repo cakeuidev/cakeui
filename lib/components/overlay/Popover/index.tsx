@@ -7,7 +7,7 @@ import { inWindow, useComponentRef, useOverlayState } from '../../tools'
 export type PopoverProps = React.JSX.IntrinsicElements['div'] & {
   open?: boolean
   onChangeOpen?: (open: boolean) => any
-  trigger?: 'hover' | 'click' | 'custom'        // default: 'hover'
+  trigger?: 'hover' | 'click'                   // default: 'hover'
   position?:                                    // default: 'top'
     'top' | 'top-left' | 'top-right' |
     'bottom' | 'bottom-left' | 'bottom-right' |

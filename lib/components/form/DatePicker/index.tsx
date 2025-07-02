@@ -117,13 +117,13 @@ function DatePicker(props: DatePickerProps) {
   }, [v])
   useEffect(() => {
     if (open) {
-      const ob = new MutationObserver(() => {
+      const observer = new MutationObserver(() => {
         if (timeEl.current) {
           scrollToActive('instant')
         }
       })
-      ob.observe(document.body, { childList: true })
-      return () => ob.disconnect()
+      observer.observe(document.body, { childList: true })
+      return () => observer.disconnect()
     }
   }, [open])
 
@@ -181,13 +181,13 @@ function DatePicker(props: DatePickerProps) {
   }
 
   const observer = useResizeObserver(calendarEl, renderTimePicker)
-  useEventListener('mousedown', (e) => {
+  useEventListener('pointerdown', (e) => {
     const el = e.target as HTMLElement
     if (labelEl.current?.contains(el)) {
-      setOpen(!open)
-      if (!open && !inputEl.current?.contains(el)) {
-        stayOpen.current = true
+      if (!inputEl.current?.contains(el)) {
+        stayOpen.current = !open
       }
+      setOpen(!open)
     } else if (popoverEl.current?.contains(el)) {
       stayOpen.current = true
     } else {
@@ -248,8 +248,10 @@ function DatePicker(props: DatePickerProps) {
             <Icon
               className='ui-input-button'
               size={16}
-              onClick={() => changeValue(null)}
-              onMouseDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => {
+                e.stopPropagation()
+                setText('')
+              }}
             >
               close
             </Icon>
@@ -262,7 +264,6 @@ function DatePicker(props: DatePickerProps) {
           'ui-disabled': rest.disabled
         })}
         open={open}
-        trigger='custom'
         position='bottom-left'
       >
         <div className='ui-date-picker-body'>

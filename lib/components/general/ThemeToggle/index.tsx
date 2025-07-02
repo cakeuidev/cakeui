@@ -1,31 +1,32 @@
 import { useEffect, useState } from 'react'
 import { useEventListener, useFunction } from '../../../hooks/index.js'
 
-export type ThemeToggleOptions = 'light' | 'dark'
+export type ThemeToggleValue = 'light' | 'dark'
+export type ThemeToggleFunction = () => void
 
 function useThemeToggle(
   localStorageKey: string = 'theme'
-): [ThemeToggleOptions, () => any] {
+): [ThemeToggleValue, ThemeToggleFunction] {
   const getTheme = () => {
     if (typeof window === 'undefined') {
       return 'light'
     }
-    const mediaQueryList = matchMedia("(prefers-color-scheme: dark)")
+    const mql = matchMedia("(prefers-color-scheme: dark)")
     const theme = localStorage.getItem(localStorageKey)
-    return theme === 'dark' || theme !== 'light' && mediaQueryList.matches ? 'dark' : 'light'
+    return theme === 'dark' || theme !== 'light' && mql.matches ? 'dark' : 'light'
   }
-  const [theme, setTheme] = useState<ThemeToggleOptions>(getTheme)
+  const [theme, setTheme] = useState<ThemeToggleValue>(getTheme)
 
   useEffect(() => {
-    const mediaQueryList = matchMedia('(prefers-color-scheme: dark)')
+    const mql = matchMedia('(prefers-color-scheme: dark)')
     const toggleDark = () => {
       const theme = getTheme()
       setTheme(theme)
       document.documentElement.classList.toggle('dark', theme === 'dark')
     }
     toggleDark()
-    mediaQueryList.addEventListener('change', toggleDark)
-    return () => mediaQueryList.removeEventListener('change', toggleDark)
+    mql.addEventListener('change', toggleDark)
+    return () => mql.removeEventListener('change', toggleDark)
   }, [])
 
   const toggle = useFunction(() => {
@@ -37,7 +38,7 @@ function useThemeToggle(
   })
 
   useEventListener('ui-theme-change', (e) => {
-    const event = e as CustomEvent<{ theme: ThemeToggleOptions }>
+    const event = e as CustomEvent<{ theme: ThemeToggleValue }>
     setTheme(event.detail.theme)
   })
 

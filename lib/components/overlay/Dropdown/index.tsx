@@ -8,7 +8,7 @@ import Icon from '../../general/Icon'
 export type DropdownProps = React.JSX.IntrinsicElements['div'] & {
   open?: boolean
   onChangeOpen?: (open: boolean) => any
-  trigger?: 'hover' | 'click' | 'custom' // default: 'hover'
+  trigger?: 'hover' | 'click'            // default: 'hover'
   position?: 'left' | 'right' | 'center' // default: 'left'
   offset?: number                        // default: 4
 }

@@ -130,7 +130,7 @@ function Carousel(props: CarouselProps) {
     if (!dragRef.current || !groupEl.current) {
       return
     }
-    const event = e as MouseEvent
+    const event = e as PointerEvent
     const { startX, scrollLeft } = dragRef.current
     const offset = event.clientX - startX
     groupEl.current.scrollLeft = scrollLeft - offset
@@ -196,7 +196,7 @@ function Carousel(props: CarouselProps) {
     const { initKey, initX } = dragRef.current
     let index = activeIndex
     if (activeKey === initKey) {
-      const event = e as MouseEvent
+      const event = e as PointerEvent
       const offset = event.clientX - initX
       if (offset <= -20) {
         index = activeIndex + 1

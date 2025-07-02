@@ -104,13 +104,13 @@ function Select(props: SelectProps) {
     }
   }, [open, searchOptions])
 
-  useEventListener('mousedown', (e) => {
+  useEventListener('pointerdown', (e) => {
     const el = e.target as HTMLElement
     if (labelEl.current?.contains(el)) {
-      setOpen(!open)
-      if (!open && !inputEl.current?.contains(el)) {
-        stayOpen.current = true
+      if (!inputEl.current?.contains(el)) {
+        stayOpen.current = !open
       }
+      setOpen(!open)
     } else if (dropdownEl.current?.contains(el)) {
       stayOpen.current = true
     } else {
@@ -133,7 +133,8 @@ function Select(props: SelectProps) {
   const changeIndex = (n: number) => {
     let newIndex = (index + n) % searchOptions.length
     if (n === 0) {
-      newIndex = 0
+      const option = multiple ? activeOptions.findLast((x) => x) : activeOption
+      newIndex = option ? searchOptions.indexOf(option) : -1
     }
     for (let i = 0; i < searchOptions.length; i++) {
       const option = searchOptions[newIndex]
@@ -148,13 +149,24 @@ function Select(props: SelectProps) {
       }
     }
     setIndex(newIndex)
-    if (n) {
-      moveIndex.current = true
-      requestAnimationFrame(() => {
-        const el = document.querySelector('.ui-select-hover')
-        el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    if (n == 0 && newIndex) {
+      const observer = new MutationObserver(() => {
+        if (dropdownEl.current) {
+          scrollToActive('instant')
+          observer.disconnect()
+        }
       })
+      observer.observe(document.body, { childList: true })
+    } else {
+      scrollToActive()
     }
+  }
+  const scrollToActive = (behavior: ScrollBehavior = 'smooth') => {
+    moveIndex.current = true
+    requestAnimationFrame(() => {
+      const el = document.querySelector('.ui-select-hover')
+      el?.scrollIntoView({ behavior, block: 'nearest' })
+    })
   }
 
   return (
@@ -180,8 +192,11 @@ function Select(props: SelectProps) {
                 <Icon
                   className='ui-input-button'
                   size={16}
-                  onClick={() => changeValue(option.value)}
-                  onMouseDown={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => {
+                    e.stopPropagation()
+                    stayOpen.current = !!open
+                    changeValue(option.value)
+                  }}
                 >
                   close
                 </Icon>
@@ -250,15 +265,17 @@ function Select(props: SelectProps) {
             <Icon
               className='ui-input-button'
               size={16}
-              onClick={() => changeValue('')}
-              onMouseDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => {
+                e.stopPropagation()
+                changeValue('')
+              }}
             >
               close
             </Icon>
           )}
         </>
       )}
-      <Dropdown open={open} trigger='custom'>
+      <Dropdown open={open}>
         <Dropdown.Content ref={dropdownEl} className='ui-select-dropdown'>
           {searchOptions.length ? (
             <div
