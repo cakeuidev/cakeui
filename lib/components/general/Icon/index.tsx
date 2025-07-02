@@ -20,7 +20,7 @@ function Icon(props: IconProps) {
 
   useEffect(() => {
     const loaded = Loaded.get(family)
-    if (!rest.children || loaded) {
+    if (loaded || !rest.children) {
       setLoaded(loaded)
       return
     }
@@ -35,12 +35,16 @@ function Icon(props: IconProps) {
     let retries = 0
     const maxRetries = 10
     const check = () => {
-      if (document.fonts.check(`1em "${family}"`)) {
-        setTimeout(() => setLoaded(true), 50)
-      } else if (retries < maxRetries) {
-        setTimeout(check, retries * 100)
-        retries += 1
-      }
+      document.fonts.ready.then((fontFaceSet) => {
+        const font = [...fontFaceSet].find((x) => x.family === family)
+        if (font?.status === 'loaded') {
+          setLoaded(true)
+          Loaded.set(family, true)
+        } else if (retries < maxRetries) {
+          setTimeout(check, retries * 100)
+          retries += 1
+        }
+      })
     }
     check()
   }, [family, rest.children])
