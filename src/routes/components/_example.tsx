@@ -1269,9 +1269,9 @@ type VirtualScrollProps = Omit<
             Array.from({ length: 10 }).map((_, i) => ({
               ...fields.reduce((prev, field, j) => ({
                 ...prev,
-                [field.key]: `data ${i}-${j}`
+                [field.key]: `data ${i + 1}-${j}`
               }), {}),
-              id: i
+              id: i + 1
             }))
           ))
 
@@ -1304,9 +1304,9 @@ export default () => {
     Array.from({ length: 10 }).map((_, i) => ({
       ...fields.reduce((prev, field, j) => ({
         ...prev,
-        [field.key]: \`data \${i}-\${j}\`
+        [field.key]: \`data \${i + 1}-\${j}\`
       }), {}),
-      id: i
+      id: i + 1
     }))
   ))
 
@@ -1339,9 +1339,9 @@ export default () => {
             Array.from({ length: 100 }).map((_, i) => ({
               ...fields.reduce((prev, field, j) => ({
                 ...prev,
-                [field.key]: `data ${i}-${j}`
+                [field.key]: `data ${i + 1}-${j}`
               }), {}),
-              id: i
+              id: i + 1
             }))
           ))
 
@@ -1375,9 +1375,9 @@ export default () => {
     Array.from({ length: 10 }).map((_, i) => ({
       ...fields.reduce((prev, field, j) => ({
         ...prev,
-        [field.key]: \`data \${i}-\${j}\`
+        [field.key]: \`data \${i + 1}-\${j}\`
       }), {}),
-      id: i
+      id: i + 1
     }))
   ))
 
@@ -1408,12 +1408,12 @@ export default () => {
             }))
           ])
           const [data] = useState<UI.DataTableItem[]>(() => (
-            Array.from({ length: 20000 }).map((_, i) => ({
+            Array.from({ length: 1000 }).map((_, i) => ({
               ...fields.reduce((prev, field, j) => ({
                 ...prev,
-                [field.key]: `data ${i}-${j}`
+                [field.key]: `data ${i + 1}-${j}`
               }), {}),
-              id: i
+              id: i + 1
             }))
           ))
 
@@ -1447,9 +1447,9 @@ export default () => {
     Array.from({ length: 10 }).map((_, i) => ({
       ...fields.reduce((prev, field, j) => ({
         ...prev,
-        [field.key]: \`data \${i}-\${j}\`
+        [field.key]: \`data \${i + 1}-\${j}\`
       }), {}),
-      id: i
+      id: i + 1
     }))
   ))
 

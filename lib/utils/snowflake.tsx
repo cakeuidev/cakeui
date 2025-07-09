@@ -17,7 +17,7 @@ export class Snowflake {
     this.lastTime = 0
   }
 
-  generate(): BigInt {
+  generate(): bigint {
     let time = Date.now()
     if (time < this.lastTime || time < this.epoch) {
       throw Error('Clock moved backwards.')

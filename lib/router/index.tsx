@@ -158,7 +158,7 @@ export function useRouter(): RouterContext {
 }
 
 export function lazyRoutes(
-modules: Record<string, () => Promise<{ default: Component }>>
+  modules: Record<string, () => Promise<{ default: Component }>>
 ): Route[] {
   const findPrefix = (arr: string[]) => {
     if (arr.length === 1) {

@@ -11,12 +11,10 @@ class HtmlWritable extends Writable {
   getHtml() {
     return this.html
   }
-
   _write(chunk: any, _encoding: BufferEncoding, callback: (error?: Error | null) => void) {
     this.chunks.push(chunk)
     callback()
   }
-
   _final(callback: (error?: Error | null) => void) {
     this.html = Buffer.concat(this.chunks).toString()
     callback()
