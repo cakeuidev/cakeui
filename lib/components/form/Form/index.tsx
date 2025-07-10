@@ -34,7 +34,7 @@ export type FormItemProps = Omit<
   info?: React.ReactNode
   rowSpan?: number     // default: 1
   colSpan?: number     // default: 1
-  validate?: (value: any) => string | undefined
+  validate?: (value: any) => (string | undefined) | Promise<string | undefined>
 }
 export type FormValues<T = { [k: string]: any }> = T
 
@@ -42,7 +42,9 @@ export const FormContext = React.createContext<{
   values: FormValues | undefined
   cols: number
   error: { [k: string]: string }
-  validateRef: React.RefObject<{ [k: string]: (v: any) => string | undefined }>
+  validateRef: React.RefObject<{
+    [k: string]: (v: any) => (string | undefined) | Promise<string | undefined>
+  }>
 } | null>(null)
 
 function Form(props: FormProps) {
@@ -103,15 +105,17 @@ function Form(props: FormProps) {
         }
         rest.onKeyDown?.(e)
       }}
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault()
         const error: { [k: string]: string } = {}
-        for (let [name, validate] of Object.entries(validateRef.current)) {
-          const message = validate(values?.[name])
-          if (message) {
-            error[name] = message
-          }
-        }
+        await Promise.all(
+          Object.entries(validateRef.current).map(async ([name, validate]) => {
+            const message = await Promise.resolve(validate(values?.[name]))
+            if (message) {
+              error[name] = message
+            }
+          })
+        )
         setError(error)
         if (Object.keys(error).length) {
           return
