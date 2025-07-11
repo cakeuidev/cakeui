@@ -14,7 +14,7 @@ export function inWindow(el: HTMLElement) {
 }
 
 export function isNone(value: any) {
-  return value == void 0 || value === ''
+  return value === void 0 || value === null || value === ''
 }
 
 export function isNotSame(a: any, b: any) {

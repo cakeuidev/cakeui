@@ -149,7 +149,7 @@ function Select(props: SelectProps) {
       }
     }
     setIndex(newIndex)
-    if (n == 0 && newIndex) {
+    if (n === 0 && newIndex) {
       const observer = new MutationObserver(() => {
         if (dropdownEl.current) {
           scrollToActive('instant')
