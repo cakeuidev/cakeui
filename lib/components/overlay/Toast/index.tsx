@@ -194,7 +194,7 @@ function useToast(options?: ToastOptions): [ToastAPI, React.ReactNode] {
       return id
     },
     close: (id: number) => setOpen((prev) => ({ ...prev, [id]: false })),
-    clear: () => ids.current.forEach(api.close)
+    clear: () => ids.current.forEach((id) => api.close(id))
   }), [])
 
   return [api, !!items?.length && (

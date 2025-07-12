@@ -575,13 +575,12 @@ function DataTable(props: DataTableProps) {
                           ) {
                             return
                           }
-                          // el.style.cursor = 'grabbing'
                           dragRef.current = { field, startX: e.clientX, targetIndex: -1 }
                           setDragging(true)
                         }}
                       >
                         <div>{fieldRender ? fieldRender(field) : field.name}</div>
-                        {field.sortable !== false && (
+                        {(field.sortable === void 0 || field.sortable) && (
                           <div
                             className='ui-data-table-sort'
                             data-sort={field.key === sort?.key ? sort?.order : void 0}
@@ -600,7 +599,7 @@ function DataTable(props: DataTableProps) {
                             <Icon>arrow_drop_down</Icon>
                           </div>
                         )}
-                        {field.filterable !== false && (
+                        {(field.filterable === void 0 || field.filterable) && (
                           <div
                             className={cls('ui-data-table-filter', {
                               'ui-data-table-filter-active': filter?.[field.key]?.length

@@ -6,7 +6,7 @@ import App from './App'
 
 class HtmlWritable extends Writable {
   private chunks: any[] = []
-  private html = ''
+  private html: string = ''
 
   getHtml() {
     return this.html

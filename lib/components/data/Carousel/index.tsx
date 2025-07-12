@@ -19,7 +19,7 @@ export type CarouselItemProps = React.JSX.IntrinsicElements['div'] & {
 }
 
 const CarouselContext = React.createContext<{
-  activeKey: any
+  activeKey: string | undefined
   itemEl: React.RefObject<{ [k: string]: HTMLDivElement | null }>
 } | null>(null)
 

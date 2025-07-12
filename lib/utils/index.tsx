@@ -23,7 +23,7 @@ export function cls(
 
 const snowflake = new Snowflake({ epoch: new Date('2025').getTime() })
 export function uid(): string {
-  return snowflake.generate().toString()
+  return snowflake.generate().toString().padStart(19, '0')
 }
 
 export function delay(delay: number): Promise<void> {
