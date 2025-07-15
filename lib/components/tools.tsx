@@ -24,7 +24,7 @@ export function isNotSame(a: any, b: any) {
     if (Object.keys(a).length !== Object.keys(b).length) {
       return true
     }
-    for (let [k, v] of Object.entries(a)) {
+    for (const [k, v] of Object.entries(a)) {
       if (v !== b[k]) {
         return true
       }
@@ -157,8 +157,8 @@ export function useInputState<T extends HTMLInputElement | HTMLTextAreaElement, 
       } else if (target.type === 'file') {
         const files = Array.isArray(value) ? value : []
         const dataTransfer = new DataTransfer()
-        for (let i = 0; i < files.length; i++) {
-          dataTransfer.items.add(files[i])
+        for (const file of files) {
+          dataTransfer.items.add(file)
         }
         target.files = dataTransfer.files
       } else {

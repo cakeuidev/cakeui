@@ -55,9 +55,9 @@ function Toast(props: ToastProps) {
       return
     }
     const els = el.current.querySelectorAll<HTMLElement>('.ui-toast-item:not(.ui-toast-close)')
-    for (let i = 0; i < els.length; i++) {
-      els[i].style.scale = ''
-      els[i].style.opacity = ''
+    for (const el of els) {
+      el.style.scale = ''
+      el.style.opacity = ''
     }
     const property: 'top' | 'bottom' = position.includes('top') ? 'top' : 'bottom'
     let totalHeight = 0

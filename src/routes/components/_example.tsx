@@ -1350,7 +1350,7 @@ export default () => {
               style={{ height: 404 }}
               fields={fields}
               data={data}
-              pageSize={10}
+              pageSize={20}
             />
           )
         },

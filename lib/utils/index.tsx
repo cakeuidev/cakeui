@@ -4,14 +4,13 @@ export function cls(
   ...args: (undefined | string | string[] | { [k: string]: any })[]
 ): string | undefined {
   const classList = []
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i]
+  for (const arg of args) {
     if (typeof arg === 'string') {
       classList.push(arg)
     } else if (Array.isArray(arg)) {
       classList.push(cls(...arg))
     } else if (arg && typeof arg === 'object') {
-      for (let [k, v] of Object.entries(arg)) {
+      for (const [k, v] of Object.entries(arg)) {
         if (v) {
           classList.push(k)
         }

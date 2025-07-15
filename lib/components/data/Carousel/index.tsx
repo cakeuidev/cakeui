@@ -175,7 +175,7 @@ function Carousel(props: CarouselProps) {
     const c = p.left + p.width / 2
     let min = Infinity
     let activekey = ''
-    for (let [key, el] of Object.entries(itemEl.current)) {
+    for (const [key, el] of Object.entries(itemEl.current)) {
       if (el) {
         const rect = el.getBoundingClientRect()
         const offset = Math.abs(rect.left + rect.width / 2 - c)

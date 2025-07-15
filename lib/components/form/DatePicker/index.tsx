@@ -167,8 +167,8 @@ function DatePicker(props: DatePickerProps) {
   const scrollToActive = (behavior: ScrollBehavior = 'smooth') => {
     requestAnimationFrame(() => {
       const els = document.querySelectorAll('.ui-date-picker-time-active')
-      for (let i = 0; i < els.length; i++) {
-        els[i].scrollIntoView({ behavior, block: 'start' })
+      for (const el of els) {
+        el.scrollIntoView({ behavior, block: 'start' })
       }
     })
   }

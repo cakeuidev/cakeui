@@ -154,13 +154,12 @@ function DataTable(props: DataTableProps) {
       const fieldMap = new Map(fields.map((x) => [x.key, x]))
       filterData = filterData.filter((x) => {
         let find = true
-        for (let [key, values] of Object.entries(filter)) {
+        for (const [key, values] of Object.entries(filter)) {
           const field = fieldMap.get(key)
           if (field && values.length) {
             find = false
             const ruleMap = new Map(field.filterOptions?.map((x) => [x.value, x.rule]))
-            for (let i = 0; i < values.length; i++) {
-              const value = values[i]
+            for (const value of values) {
               const rule = ruleMap.get(value)
               find = rule ? rule(x) : convert(value) === convert(x[key])
               if (find) {
@@ -179,7 +178,7 @@ function DataTable(props: DataTableProps) {
       filterData.sort((a, b) => {
         let A = a[sort.key as string]
         let B = b[sort.key as string]
-        let C: number | undefined = void 0
+        let C: number | undefined
         if (typeof A === 'string' && typeof B === 'string') {
           C = A.localeCompare(B)
         } else if (
@@ -212,8 +211,8 @@ function DataTable(props: DataTableProps) {
       return {}
     }
     const fieldWidths: { [k: string]: number | undefined } = {}
-    for (let i = 0; i < fields.length; i++) {
-      fieldWidths[fields[i].key] = fieldWidth?.(fields[i])
+    for (const field of fields) {
+      fieldWidths[field.key] = fieldWidth?.(field)
     }
     return fieldWidths
   }, [fields, fieldWidth])
@@ -230,8 +229,8 @@ function DataTable(props: DataTableProps) {
       return {}
     }
     const widths: { [k: string]: number } = {}
-    for (let i = 0; i < fields.length; i++) {
-      const key = fields[i].key
+    for (const field of fields) {
+      const key = field.key
       widths[key] = Math.max(
         fieldWidths[key] ?? resizeWidth[key] ?? extendWidth?.[key] ?? fitWidth[key] ?? 0,
         minWidth[key] ?? 0
@@ -244,8 +243,7 @@ function DataTable(props: DataTableProps) {
       return [[], [], []]
     }
     let lCols = [], mCols = [], rCols = []
-    for (let i = 0; i < fields.length; i++) {
-      const field = fields[i]
+    for (const field of fields) {
       const width = colWidths[field.key]
       if (field.fixed === 'left') {
         lCols.push({ field, width })
@@ -307,8 +305,10 @@ function DataTable(props: DataTableProps) {
   }, [view.width, fitWidth, rendering])
   useEffect(() => {
     setPage(1)
-    groupEl.current?.scrollTo({ top: 0 })
   }, [filterData])
+  useEffect(() => {
+    groupEl.current?.scrollTo({ top: 0 })
+  }, [pageData])
 
   const renderView = () => {
     if (!groupEl.current) {
@@ -328,7 +328,7 @@ function DataTable(props: DataTableProps) {
     setTimeout(() => {
       const fitWidth: { [k: string]: number } = {}
       const minWidth: { [k: string]: number } = {}
-      for (let [key, el] of Object.entries(thEl.current)) {
+      for (const [key, el] of Object.entries(thEl.current)) {
         if (el) {
           fitWidth[key] = el.offsetWidth
           minWidth[key] = (el.firstElementChild as HTMLElement).offsetWidth
@@ -350,9 +350,9 @@ function DataTable(props: DataTableProps) {
       } else {
         const values: any[] = []
         const labels: string[] = []
-        for (let i = 0; i < data.length; i++) {
-          const value = data[i][field.key]
-          const label = convert(data[i][field.key])
+        for (const item of data) {
+          const value = item[field.key]
+          const label = convert(item[field.key])
           if (label && !labels.includes(label)) {
             values.push(value)
             labels.push(label)

@@ -34,8 +34,8 @@ const convert = (str: string) => {
 }
 const flat = (routes: Route[], parentPath: string = '', components: any[] = []) => {
   const result: { path: string, components: any[] }[] = []
-  for (let i = 0; i < routes.length; i++) {
-    const { path, component, children } = routes[i]
+  for (const route of routes) {
+    const { path, component, children } = route
     const currPath = parentPath + convert(path)
     const currComponents = [...components]
     if (component !== void 0) {
@@ -94,8 +94,8 @@ function Router(props: RouterProps) {
     }
     let element = null
     const flatRoutes = flat(routes)
-    for (let i = 0; i < flatRoutes.length; i++) {
-      const { path, components } = flatRoutes[i]
+    for (const route of flatRoutes) {
+      const { path, components } = route
       const regex = path === '/' ?
         /^\/$/ : new RegExp(`^${path.replace(/\.?\*\/?/, '.*').replace(/:(\w+)/g, '([^\/]+)')}$`)
       const match = pathname.match(regex)
@@ -105,8 +105,8 @@ function Router(props: RouterProps) {
         for (let i = 0; i < keys.length; i++) {
           params[keys[i]] = match[i + 1]
         }
-        for (let j = components.length - 1; j >= 0; j--) {
-          const Component = components[j]
+        for (let i = components.length - 1; i >= 0; i--) {
+          const Component = components[i]
           element = <Component>{element}</Component>
         }
         element = (
