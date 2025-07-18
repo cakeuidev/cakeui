@@ -21,7 +21,7 @@ export type FormProps = Omit<
   defaultValues?: FormValues
   values?: FormValues
   onChange?: (key: string, value: any) => any
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>, values: FormValues) => any
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>, values: FormValues) => any
   cols?: number        // default: 1
   rowGap?: number      // default: 0
   colGap?: number      // default: 16
@@ -34,17 +34,16 @@ export type FormItemProps = Omit<
   info?: React.ReactNode
   rowSpan?: number     // default: 1
   colSpan?: number     // default: 1
-  validate?: (value: any) => (string | undefined) | Promise<string | undefined>
+  validate?: ValidateFunction
 }
 export type FormValues<T = { [k: string]: any }> = T
+export type ValidateFunction = (value: any) => (string | void) | Promise<string | void>
 
 export const FormContext = React.createContext<{
   values: FormValues | undefined
   cols: number
   error: { [k: string]: string }
-  validateRef: React.RefObject<{
-    [k: string]: (v: any) => (string | undefined) | Promise<string | undefined>
-  }>
+  validateRef: React.RefObject<{ [k: string]: ValidateFunction }>
 } | null>(null)
 
 function Form(props: FormProps) {
@@ -64,9 +63,9 @@ function Form(props: FormProps) {
   const [maxCols, setMaxCols] = useState(cols)
   const [values, setValues] = useStateListner(propsValues, void 0, defaultValues)
   const [error, setError] = useState<{ [k: string]: string }>({})
-  const validateRef = useRef<{ [k: string]: (v: any) => string | undefined }>({})
+  const validateRef = useRef<{ [k: string]: ValidateFunction }>({})
 
-  useEventListener('ui-input-change', (e) => {
+  useEventListener('ui-input-change', async (e) => {
     const event = e as CustomEvent
     const key = (event.target as HTMLInputElement).name
     const value = event.detail.value
@@ -74,7 +73,7 @@ function Form(props: FormProps) {
       setValues((prev: any) => ({ ...prev, [key]: value }))
       onChange?.(key, value)
       if (Object.hasOwn(error, key) && validateRef.current[key]) {
-        const message = validateRef.current[key](value)
+        const message = await Promise.resolve(validateRef.current[key](value))
         setError((prev) => ({ ...prev, [key]: message ?? '' }))
       }
     }
@@ -144,7 +143,7 @@ function FormItem(props: FormItemProps) {
   const [el, ref] = useComponentRef(rest.ref)
   const [name, setName] = useState('')
 
-  const validateFn = useFunction((v: any) => validate?.(v))
+  const validateFn = useFunction<ValidateFunction>((v) => validate?.(v))
 
   useEffect(() => {
     const inputEl = el.current?.querySelector<HTMLInputElement>(':is(input,textarea)[name]')

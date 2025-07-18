@@ -1883,7 +1883,7 @@ type FormProps = Omit<
   defaultValues?: FormValues
   values?: FormValues
   onChange?: (key: string, value: any) => any
-  onSubmit?: (e: React.FormEvent<HTMLFormElement>, values: FormValues) => any
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>, values: FormValues) => any
   cols?: number        // default: 1
   rowGap?: number      // default: 0
   colGap?: number      // default: 16
@@ -1896,9 +1896,10 @@ type FormItemProps = Omit<
   info?: React.ReactNode
   rowSpan?: number     // default: 1
   colSpan?: number     // default: 1
-  validate?: (value: any) => string | undefined
+  validate?: ValidateFunction
 }
 type FormValues<T = { [k: string]: any }> = T
+type ValidateFunction = (value: any) => (string | void) | Promise<string | void>
     `
   },
   Input: {

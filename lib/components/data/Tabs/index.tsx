@@ -17,7 +17,7 @@ export type TabsContentProps = React.JSX.IntrinsicElements['div'] & {
 
 const TabsContext = React.createContext<{
   activeKey: any
-  setActiveKey: (v: any) => void
+  setActiveKey: (key: any) => void
   destroyInactive?: boolean
 } | null>(null)
 
