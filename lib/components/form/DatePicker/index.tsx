@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { cls } from '../../../utils/index.js'
-import { useEventListener, useResizeObserver } from '../../../hooks/index.js'
+import { useResizeObserver } from '../../../hooks/index.js'
 import { useInputState, useStateListner } from '../../tools'
 import Button from '../../general/Button'
 import Icon from '../../general/Icon'
@@ -99,9 +99,9 @@ function DatePicker(props: DatePickerProps) {
     return dayjs(v).isValid() ? dayjs(v).format(format) : ''
   }, [v, format])
   const [hours, minutes, seconds] = useMemo(() => {
-    const hours = [...Array(use12Hour ? 12 : 24)].map((_, i) => i)
-    const minutes = [...Array(60)].map((_, i) => i)
-    const seconds = [...Array(60)].map((_, i) => i)
+    const hours = Array.from({ length: use12Hour ? 12 : 24 }).map((_, i) => i)
+    const minutes = Array.from({ length: 60 }).map((_, i) => i)
+    const seconds = Array.from({ length: 60 }).map((_, i) => i)
     return [hours, minutes, seconds]
   }, [use12Hour])
   const [disabledH, disabledM, disabledS] = useMemo(() => {
@@ -181,19 +181,6 @@ function DatePicker(props: DatePickerProps) {
   }
 
   const observer = useResizeObserver(calendarEl, renderTimePicker)
-  useEventListener('pointerdown', (e) => {
-    const el = e.target as HTMLElement
-    if (labelEl.current?.contains(el)) {
-      if (!inputEl.current?.contains(el)) {
-        stayOpen.current = !open
-      }
-      setOpen(!open)
-    } else if (popoverEl.current?.contains(el)) {
-      stayOpen.current = true
-    } else {
-      setOpen(false)
-    }
-  })
 
   return (
     <label
@@ -203,6 +190,22 @@ function DatePicker(props: DatePickerProps) {
       style={style}
       tabIndex={-1}
       ref={labelEl}
+      onPointerDown={(e) => {
+        const el = e.target as HTMLElement
+        if (!inputEl.current?.contains(el)) {
+          stayOpen.current = true
+        }
+        if (labelEl.current?.contains(el)) {
+          setTimeout(() => setOpen(!open))
+        }
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          setOpen(!open)
+        } else if (e.key === 'Escape') {
+          setOpen(false)
+        }
+      }}
     >
       {before}
       <input {...rest} type='hidden' ref={ref} value={dayjs(v).isValid() ? dayjs(v).format() : ''} />
@@ -232,13 +235,6 @@ function DatePicker(props: DatePickerProps) {
               setText(formatDate)
             }
           }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              setOpen(!open)
-            } else if (e.key === 'Escape') {
-              setOpen(false)
-            }
-          }}
         />
       </div>
       {after ?? (
@@ -250,6 +246,7 @@ function DatePicker(props: DatePickerProps) {
               size={16}
               onPointerDown={(e) => {
                 e.stopPropagation()
+                changeValue(null)
                 setText('')
               }}
             >
@@ -273,7 +270,7 @@ function DatePicker(props: DatePickerProps) {
                 calendarEl.current = el
                 observer.observe()
               }}
-              date={dayjs(v).isValid() ? dayjs(v).startOf('d') : null}
+              date={dayjs(v).isValid() ? dayjs(v) : null}
               onChangeDate={(date) => {
                 if (type === 'date') {
                   setOpen(false)

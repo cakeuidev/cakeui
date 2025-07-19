@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { cls } from '../../../utils/index.js'
-import { useEventListener } from '../../../hooks/index.js'
 import { useInputState, useStateListner } from '../../tools'
 import Icon from '../../general/Icon'
 import Dropdown from '../../overlay/Dropdown'
@@ -13,7 +12,8 @@ export type SelectCommonProps = Omit<
   onChangeOpen?: (open: boolean) => any
   options?: SelectOption[]
   optionsMaxHeight?: number
-  clearable?: boolean
+  searchable?: boolean // default: true
+  clearable?: boolean  // default: true
   before?: React.ReactNode
   after?: React.ReactNode
   optionRender?: (option: SelectOption) => React.ReactNode
@@ -46,6 +46,7 @@ function Select(props: SelectProps) {
     onChangeOpen,
     options,
     optionsMaxHeight,
+    searchable = true,
     clearable = true,
     before,
     after,
@@ -88,6 +89,9 @@ function Select(props: SelectProps) {
   useEffect(() => {
     if (open) {
       setClear(false)
+      if (activeOptions.length) {
+        renderInput()
+      }
     } else {
       setClear(true)
       const timer = setTimeout(() => {
@@ -104,20 +108,6 @@ function Select(props: SelectProps) {
     }
   }, [open, searchOptions])
 
-  useEventListener('pointerdown', (e) => {
-    const el = e.target as HTMLElement
-    if (labelEl.current?.contains(el)) {
-      if (!inputEl.current?.contains(el)) {
-        stayOpen.current = !open
-      }
-      setOpen(!open)
-    } else if (dropdownEl.current?.contains(el)) {
-      stayOpen.current = true
-    } else {
-      setOpen(false)
-    }
-  })
-
   const changeValue = (value: string) => {
     if (!value) {
       setV(multiple ? [] : '')
@@ -125,7 +115,11 @@ function Select(props: SelectProps) {
     }
     if (multiple) {
       const prev = Array.isArray(v) ? v : []
-      setV(prev.includes(value) ? prev.filter((x) => x !== value) : [...prev, value])
+      const newValue = prev.includes(value) ? prev.filter((x) => x !== value) : [...prev, value]
+      setV(newValue)
+      if (newValue.length) {
+        renderInput()
+      }
     } else {
       setV(value)
     }
@@ -133,7 +127,7 @@ function Select(props: SelectProps) {
   const changeIndex = (n: number) => {
     let newIndex = (index + n) % searchOptions.length
     if (n === 0) {
-      const option = multiple ? activeOptions.findLast((x) => x) : activeOption
+      const option = multiple ? activeOptions[activeOptions.length - 1] : activeOption
       newIndex = option ? searchOptions.indexOf(option) : -1
     }
     for (let i = 0; i < searchOptions.length; i++) {
@@ -164,9 +158,21 @@ function Select(props: SelectProps) {
   const scrollToActive = (behavior: ScrollBehavior = 'smooth') => {
     moveIndex.current = true
     requestAnimationFrame(() => {
-      const el = document.querySelector('.ui-select-hover')
-      el?.scrollIntoView({ behavior, block: 'nearest' })
+      const el = document.querySelector('.ui-select-hover:not(:first-child)')
+      if (el) {
+        el.scrollIntoView({ behavior, block: 'nearest' })
+      }
     })
+  }
+  const renderInput = () => {
+    if (!inputEl.current) {
+      return
+    }
+    const span = document.createElement('span')
+    span.textContent = inputEl.current.value
+    document.body.append(span)
+    inputEl.current.style.width = `${span.offsetWidth + 1}px`
+    span.remove()
   }
 
   return (
@@ -178,6 +184,36 @@ function Select(props: SelectProps) {
       style={style}
       tabIndex={-1}
       ref={labelEl}
+      onPointerDown={(e) => {
+        const el = e.target as HTMLElement
+        if (open && !inputEl.current?.contains(el)) {
+          stayOpen.current = true
+        }
+        if (labelEl.current?.contains(el)) {
+          setTimeout(() => setOpen(!open))
+        }
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key.startsWith('Arrow')) {
+          setOpen(true)
+        } else if (e.key === 'Escape') {
+          setOpen(false)
+        }
+        if (open) {
+          if (e.key === 'ArrowUp') {
+            changeIndex(-1)
+          } else if (e.key === 'ArrowDown') {
+            changeIndex(1)
+          } else if (e.key === 'Enter') {
+            if (searchOptions[index]) {
+              changeValue(searchOptions[index].value)
+            }
+            if (!multiple) {
+              setOpen(false)
+            }
+          }
+        }
+      }}
     >
       {before}
       <input {...rest} type='hidden' ref={ref} value={v ?? ''} />
@@ -204,59 +240,35 @@ function Select(props: SelectProps) {
             )}
           </React.Fragment>
         ))}
-        <input
-          inputMode='none'
-          ref={inputEl}
-          className={cls('ui-select-search', {
-            'ui-select-has-value': !multiple && v
-          })}
-          value={clear ? '' : search}
-          onChange={(e) => {
-            setSearch(e.target.value)
-            setOpen(true)
-            if (activeOptions.length) {
-              const span = document.createElement('span')
-              span.textContent = e.target.value
-              document.body.append(span)
-              if (inputEl.current) {
-                inputEl.current.style.width = `${span.offsetWidth}px`
-              }
-              span.remove()
-            }
-          }}
-          disabled={rest.disabled}
-          placeholder={!multiple && activeOption?.label || rest.placeholder}
-          onBlur={() => {
-            if (stayOpen.current) {
-              stayOpen.current = false
-              inputEl.current?.focus()
-              return
-            }
-            setOpen(false)
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key.startsWith('Arrow')) {
+        {searchable ? (
+          <input
+            inputMode='none'
+            ref={inputEl}
+            className={cls('ui-select-search', {
+              'ui-select-has-value': !multiple && v
+            })}
+            value={clear ? '' : search}
+            onChange={(e) => {
+              setSearch(e.target.value)
               setOpen(true)
-            } else if (e.key === 'Escape') {
-              setOpen(false)
-            }
-            if (open) {
-              if (e.key === 'ArrowUp') {
-                changeIndex(-1)
-              } else if (e.key === 'ArrowDown') {
-                changeIndex(1)
-              } else if (e.key === 'Enter') {
-                if (searchOptions[index]) {
-                  changeValue(searchOptions[index].value)
-                  setSearch('')
-                }
-                if (!multiple) {
-                  setOpen(false)
-                }
+              if (activeOptions.length) {
+                renderInput()
               }
-            }
-          }}
-        />
+            }}
+            disabled={rest.disabled}
+            placeholder={(multiple ? void 0 : activeOption?.label) ?? rest.placeholder}
+            onBlur={() => {
+              if (stayOpen.current) {
+                stayOpen.current = false
+                inputEl.current?.focus()
+                return
+              }
+              setOpen(false)
+            }}
+          />
+        ) : (
+          multiple ? void 0 : activeOption?.label
+        )}
       </div>
       {after ?? (
         <>

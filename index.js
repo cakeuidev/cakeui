@@ -5,9 +5,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
-const templateHtml = isProduction
-  ? await fs.readFile('./dist/src/index.html', 'utf-8')
-  : ''
+const templateHtml = isProduction ? await fs.readFile('./dist/src/index.html', 'utf-8') : ''
 
 const app = express()
 
@@ -17,7 +15,7 @@ if (!isProduction) {
   vite = await createServer({
     server: { middlewareMode: true },
     appType: 'custom',
-    base,
+    base
   })
   app.use(vite.middlewares)
 } else {

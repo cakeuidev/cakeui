@@ -2322,7 +2322,8 @@ type SelectCommonProps = Omit<
   onChangeOpen?: (open: boolean) => any
   options?: SelectOption[]
   optionsMaxHeight?: number
-  clearable?: boolean
+  searchable?: boolean // default: true
+  clearable?: boolean  // default: true
   before?: React.ReactNode
   after?: React.ReactNode
   optionRender?: (option: SelectOption) => React.ReactNode

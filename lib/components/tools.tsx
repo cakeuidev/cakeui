@@ -151,7 +151,7 @@ export function useInputState<T extends HTMLInputElement | HTMLTextAreaElement, 
     if (el.current) {
       const target = el.current as HTMLInputElement
       if (target.type === 'radio' || target.type === 'checkbox') {
-        target.checked = !!value
+        target.checked = Boolean(value)
       } else if (target.parentElement?.classList.contains('ui-date-picker')) {
         target.value = dayjs(value).isValid() ? dayjs(value).format() : ''
       } else if (target.type === 'file') {

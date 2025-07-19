@@ -32,6 +32,9 @@
 .ui-input-button {
   @apply h-5 w-5 text-gray;
 }
+.ui-input-icon {
+  @apply pointer-events-none;
+}
 .ui-input-button {
   @apply cursor-pointer hover:text-deep;
 }
@@ -169,7 +172,7 @@
   @apply py-2 px-3 text-center text-gray;
 }
 .ui-select-tags {
-  @apply flex flex-wrap gap-1;
+  @apply grow-1 overflow-auto flex flex-wrap gap-1;
 }
 .ui-select-tags > input {
   @apply w-0;

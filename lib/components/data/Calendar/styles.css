@@ -5,21 +5,27 @@
 .ui-calendar-title {
   @apply font-medium flex items-center;
 }
+.ui-calendar-year-month {
+  @apply grow-1 text-center flex justify-center gap-2;
+}
+.ui-calendar-year {
+  @apply w-21;
+}
 .ui-calendar-month {
-  @apply grow-1 text-center;
+  @apply w-18;
 }
 .ui-calendar-icon {
   @apply cursor-pointer p-1 hover:bg-light;
 }
 
-.ui-calendar-week {
+.ui-calendar-weeks {
   @apply my-1 text-gray;
 }
-.ui-calendar-week,
+.ui-calendar-weeks,
 .ui-calendar-days {
   @apply grid grid-cols-7 gap-1;
 }
-.ui-calendar-week > span,
+.ui-calendar-weeks > span,
 .ui-calendar-days > span {
   @apply min-h-8 min-w-8 overflow-auto inline-flex items-center justify-center rounded-lg;
 }
