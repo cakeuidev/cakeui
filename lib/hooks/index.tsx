@@ -89,7 +89,7 @@ export function useResizeObserver(
   disconnect: () => void
 } {
   const fn = useFunction(callback)
-  const observer = useRef(new ResizeObserver(fn))
+  const observer = useRef<ResizeObserver>(null)
 
   useEffect(() => {
     observe()
@@ -98,11 +98,12 @@ export function useResizeObserver(
 
   const observe = useFunction(() => {
     if (ref.current) {
+      observer.current = new ResizeObserver(fn)
       observer.current.observe(ref.current, options)
     }
   })
   const disconnect = useFunction(() => {
-    observer.current.disconnect()
+    observer.current?.disconnect()
   })
 
   return { observe, disconnect }
@@ -117,7 +118,7 @@ export function useMutationObserver(
   disconnect: () => void
 } {
   const fn = useFunction(callback)
-  const observer = useRef(new MutationObserver(fn))
+  const observer = useRef<MutationObserver>(null)
 
   useEffect(() => {
     observe()
@@ -126,11 +127,12 @@ export function useMutationObserver(
 
   const observe = useFunction(() => {
     if (ref.current) {
+      observer.current = new MutationObserver(fn)
       observer.current.observe(ref.current, options)
     }
   })
   const disconnect = useFunction(() => {
-    observer.current.disconnect()
+    observer.current?.disconnect()
   })
 
   return { observe, disconnect }
