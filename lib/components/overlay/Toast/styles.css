@@ -1,5 +1,5 @@
 .ui-toast {
-  @apply fixed z-9999 bottom-3 right-3 w-80 max-w-screen;
+  @apply fixed z-9999 bottom-3 right-3 w-75 max-w-screen;
 }
 .ui-toast-top-left {
   @apply top-3 left-3;

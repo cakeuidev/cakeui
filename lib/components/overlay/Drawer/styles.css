@@ -9,13 +9,13 @@
   @apply opacity-0;
 }
 .ui-drawer-left {
-  @apply top-0 left-0 h-screen min-w-80 border-r;
+  @apply top-0 left-0 h-screen min-w-75 border-r;
 }
 .ui-drawer-left.ui-drawer-close {
   @apply -translate-x-full;
 }
 .ui-drawer-right {
-  @apply top-0 right-0 h-screen min-w-80 border-l;
+  @apply top-0 right-0 h-screen min-w-75 border-l;
 }
 .ui-drawer-right.ui-drawer-close {
   @apply translate-x-full;

@@ -3,6 +3,7 @@ import { cls } from '../../../utils/index.js'
 import { useInputState, useStateListner } from '../../tools'
 import Icon from '../../general/Icon'
 import Dropdown from '../../overlay/Dropdown'
+import { useClickOutside } from '../../../hooks/index.js'
 
 export type SelectProps = SelectCommonProps & (SelectSingleProps | SelectMultipleProps)
 export type SelectCommonProps = Omit<
@@ -174,6 +175,8 @@ function Select(props: SelectProps) {
     inputEl.current.style.width = `${span.offsetWidth + 1}px`
     span.remove()
   }
+
+  useClickOutside(labelEl, () => !multiple && !searchable && setOpen(false))
 
   return (
     <label

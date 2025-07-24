@@ -91,7 +91,7 @@ function Home(props: React.PropsWithChildren) {
   const { rwd, windowSize, firstRender } = use(AppContext)!
   const { pathname, navigate } = useRouter()!
   const [menuOpen, setMenuOpen] = useState(false)
-  const [theme, toggleTheme] = useThemeToggle('theme')
+  const [theme, toggleTheme] = useThemeToggle()
 
   useDocumentTitle(Title + ' - ' +
     pathname.split('/').slice(-1)[0].replace(/(?:^|-)([a-z])/g, (_, c) => c.toUpperCase())

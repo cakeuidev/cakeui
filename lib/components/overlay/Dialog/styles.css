@@ -1,6 +1,6 @@
 .ui-dialog {
   @apply fixed z-9999 top-[50vh] left-[50vw] -translate-1/2
-    min-w-80 max-h-screen max-w-screen flex flex-col
+    min-w-75 max-h-screen max-w-screen flex flex-col
     rounded-lg shadow-lg border border-light bg-background;
   @apply transition-[opacity,scale] duration-300;
   @apply opacity-100 scale-100;
