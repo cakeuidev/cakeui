@@ -80,15 +80,17 @@ function useMessage(options?: MessageOptions): [MessageAPI, React.ReactNode] {
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState<{
     type: MessageType
-    message: React.ReactNode
+    content: React.ReactNode
     duration?: number
   }>()
 
   const api: MessageAPI = useMemo(() => ({
-    open: (type, message, duration) => {
+    open: (type, content, duration) => {
       setOpen(true)
       setMessage(void 0)
-      setTimeout(() => setMessage({ type, message, duration }))
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setMessage({ type, content, duration }))
+      })
     },
     close: () => setOpen(false)
   }), [])
@@ -101,7 +103,7 @@ function useMessage(options?: MessageOptions): [MessageAPI, React.ReactNode] {
       type={message.type}
       duration={message.duration}
     >
-      {message.message}
+      {message.content}
     </Message>
   )]
 }

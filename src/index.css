@@ -60,11 +60,8 @@
   @apply w-full;
 }
 
-.app-main {
-  scrollbar-gutter: stable;
-}
 .app-container {
-  @apply relative min-h-full mx-auto p-6;
+  @apply min-h-full mx-auto p-6;
 }
 .app-container pre {
   @apply !my-3 !p-3 !text-[0.875em] border border-light;

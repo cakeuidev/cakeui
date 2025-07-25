@@ -110,7 +110,7 @@ export function useOverlayState(
       setClose(false)
       setRemove(true)
     }
-  }), [open])
+  }), [])
 
   useEffect(() => {
     if (open) {

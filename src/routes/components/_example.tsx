@@ -1806,8 +1806,6 @@ export default () => {
                   validate={(v: string) => {
                     if (!v) {
                       return 'Username is required.'
-                    } else if (v.length < 8) {
-                      return 'Username must be at least 8 characters.'
                     }
                   }}
                 >
@@ -1847,8 +1845,6 @@ export default () => {
           validate={(v: string) => {
             if (!v) {
               return 'Username is required.'
-            } else if (v.length < 8) {
-              return 'Username must be at least 8 characters.'
             }
           }}
         >
