@@ -35,7 +35,7 @@ export function isNotSame(a: any, b: any) {
   }
 }
 
-export function useComponentRef<T = HTMLElement>(
+export function useComponentRef<T extends HTMLElement>(
   ref?: React.Ref<T>
 ): [React.RefObject<T | null>, React.RefCallback<T>] {
   const refObject = useRef<T>(null)
@@ -136,7 +136,7 @@ export function useOverlayState(
   return [{ open: !!open, close, remove }, api]
 }
 
-export function useInputState<T extends HTMLInputElement | HTMLTextAreaElement, V extends any>(
+export function useInputState<T extends HTMLInputElement | HTMLTextAreaElement, V = any>(
   props?: React.DetailedHTMLProps<React.InputHTMLAttributes<T>, T>,
   defaultValue?: V,
   value?: V,

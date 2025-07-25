@@ -21,7 +21,7 @@ export type FormProps = Omit<
   defaultValues?: FormValues
   values?: FormValues
   onChange?: (key: string, value: any) => any
-  onSubmit?: (event: React.FormEvent<HTMLFormElement>, values: FormValues) => any
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>, values: any) => any
   cols?: number        // default: 1
   rowGap?: number      // default: 0
   colGap?: number      // default: 16
@@ -36,7 +36,7 @@ export type FormItemProps = Omit<
   colSpan?: number     // default: 1
   validate?: ValidateFunction
 }
-export type FormValues<T = { [k: string]: any }> = T
+export type FormValues = { [k: string]: any }
 export type ValidateFunction = (value: any) => (string | void) | Promise<string | void>
 
 export const FormContext = React.createContext<{
