@@ -1,0 +1,15 @@
+.ui-card {
+  @apply w-fit min-w-60 max-w-full flex flex-col rounded-lg border border-light bg-background;
+}
+
+.ui-card-title {
+  @apply shrink-0 font-medium p-2 border-b border-light;
+}
+
+.ui-card-content {
+  @apply grow-1 p-2 overflow-auto;
+}
+
+.ui-card-footer {
+  @apply shrink-0 p-2 border-t border-light;
+}

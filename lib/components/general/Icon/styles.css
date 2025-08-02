@@ -1,0 +1,6 @@
+.ui-icon {
+  @apply shrink-0 select-none inline-flex items-center justify-center rounded-full;
+}
+.ui-icon-button {
+  @apply cursor-pointer p-1.5 hover:bg-light;
+}

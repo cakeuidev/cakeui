@@ -1,0 +1,9 @@
+.ui-virtual-scroll {
+  @apply h-full w-full overflow-auto;
+}
+.ui-virtual-scroll > div {
+  @apply relative;
+}
+.ui-virtual-scroll > div > div {
+  @apply absolute;
+}
