@@ -1,0 +1,49 @@
+.ui-menu {
+  @apply w-fit max-w-full overflow-auto;
+}
+.ui-menu-horizontal {
+  @apply flex items-end gap-4;
+  scrollbar-width: none;
+}
+.ui-menu-vertical {
+  @apply p-1 min-w-30 flex flex-col gap-1;
+}
+.ui-dropdown-content .ui-menu-vertical,
+.ui-popover .ui-menu-vertical {
+  @apply p-0;
+}
+
+.ui-menu-item,
+.ui-menu-group-title {
+  @apply whitespace-nowrap cursor-pointer p-1 text-deep hover:text-default;
+}
+.ui-menu-active {
+  @apply font-medium text-default;
+}
+.ui-menu-disabled {
+  @apply pointer-events-none text-gray;
+}
+
+.ui-menu-group-title {
+  @apply flex items-center justify-between gap-1;
+}
+.ui-menu-group-children {
+  @apply transition-[grid-template-rows,padding] duration-300;
+  @apply grid grid-rows-[0fr];
+}
+.ui-menu-open .ui-menu-group-children {
+  @apply pt-1 grid-rows-[1fr];
+}
+.ui-menu-group-children > div {
+  @apply overflow-hidden grid gap-1;
+}
+
+.ui-menu-icon {
+  @apply text-gray;
+}
+.ui-menu-inline .ui-menu-icon {
+  @apply transition-[transform] duration-500;
+}
+.ui-menu-inline .ui-menu-open .ui-menu-icon {
+  @apply rotate-x-180;
+}

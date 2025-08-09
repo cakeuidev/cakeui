@@ -1,0 +1,34 @@
+.ui-layout {
+  @apply h-screen w-full overflow-auto flex flex-col;
+}
+.ui-layout:has(>.ui-layout-sider) {
+  @apply flex-row;
+}
+.ui-layout > .ui-layout {
+  @apply flex-1;
+}
+.ui-layout:has(>.ui-layout-sider) > .ui-layout {
+  @apply h-full;
+}
+
+.ui-layout-header {
+  @apply sticky z-10 top-0 border-b border-light;
+}
+
+.ui-layout-main {
+  @apply flex-1 overflow-auto;
+}
+
+.ui-layout-footer {
+  @apply border-t border-light;
+}
+
+.ui-layout-sider {
+  @apply overflow-auto border-light;
+}
+.ui-layout-sider:first-child {
+  @apply border-r;
+}
+.ui-layout-sider:last-child {
+  @apply border-l;
+}
