@@ -1,0 +1,12 @@
+.ui-dropdown {
+  @apply fixed z-1000 p-1 max-h-screen max-w-screen overflow-auto overscroll-contain
+    rounded-lg shadow-lg border border-light bg-inherit;
+  @apply transition-[grid-template-rows,opacity] duration-300;
+  @apply grid grid-rows-[1fr] opacity-100;
+}
+.ui-dropdown.ui-dropdown-close {
+  @apply grid-rows-[0fr] opacity-0;
+}
+.ui-dropdown > div {
+  @apply overflow-hidden;
+}

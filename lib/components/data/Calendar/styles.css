@@ -1,0 +1,33 @@
+.ui-calendar {
+  @apply p-2 w-fit flex flex-col gap-1 rounded-lg border border-light;
+}
+
+.ui-calendar-header {
+  @apply flex items-center;
+}
+.ui-calendar-header > div {
+  @apply flex-1 flex justify-center gap-2;
+}
+.ui-calandar-year,
+.ui-calandar-month {
+  @apply p-0 w-18;
+}
+.ui-calandar-year .ui-select,
+.ui-calandar-month .ui-select {
+  @apply pr-1 border-none;
+}
+
+.ui-calendar-weeks {
+  @apply text-gray;
+}
+.ui-calendar-weeks,
+.ui-calendar-days {
+  @apply grid grid-cols-7 gap-1;
+}
+.ui-calendar-weeks > div,
+.ui-calendar-days > div {
+  @apply min-h-8 min-w-8 flex items-center justify-center;
+}
+.ui-calendar-days > div:not(.ui-calendar-day) {
+  @apply text-gray;
+}
