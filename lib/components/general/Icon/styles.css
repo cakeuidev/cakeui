@@ -1,0 +1,3 @@
+.ui-icon {
+  @apply select-none inline-flex items-center justify-center rounded-full;
+}

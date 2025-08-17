@@ -1,0 +1,28 @@
+.ui-menu {
+  @apply w-fit whitespace-nowrap;
+}
+.ui-menu-horizontal {
+  @apply flex items-end;
+}
+.ui-menu-vertical {
+  @apply min-w-30 flex flex-col;
+}
+
+.ui-menu-item {
+  @apply py-1 px-2 flex items-center gap-1 hover:bg-light;
+}
+.ui-menu-sub-menus {
+  @apply transition-[grid-template-rows] duration-300;
+  @apply grid grid-rows-[0fr];
+}
+.ui-menu-open + .ui-menu-sub-menus {
+  @apply grid-rows-[1fr];
+}
+.ui-menu-sub-menus > .ui-menu {
+  @apply min-w-0 w-full overflow-hidden;
+}
+
+.ui-dropdown .ui-menu-item,
+.ui-popover .ui-menu-item  {
+  @apply rounded-lg;
+}
