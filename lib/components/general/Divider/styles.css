@@ -1,0 +1,9 @@
+.ui-divider {
+  @apply bg-light;
+}
+.ui-divider-horizontal {
+  @apply my-2 h-px w-full;
+}
+.ui-divider-vertical {
+  @apply mx-2 h-full w-px min-h-6 align-top inline-block;
+}

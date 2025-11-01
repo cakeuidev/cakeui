@@ -1,0 +1,74 @@
+button {
+  @apply cursor-pointer whitespace-nowrap;
+}
+button:disabled {
+  @apply pointer-events-none text-gray;
+}
+.ui-button {
+  @apply px-4 h-8 inline-flex items-center justify-center gap-1 rounded-lg;
+  @apply transition-[background,color,filter];
+}
+
+.ui-button-outlined {
+  @apply border border-gray;
+}
+.ui-button-outlined.ui-button-info {
+  @apply hover:border-info hover:text-info;
+}
+.ui-button-outlined.ui-button-success {
+  @apply hover:border-success hover:text-success;
+}
+.ui-button-outlined.ui-button-warning {
+  @apply hover:border-warning hover:text-warning;
+}
+.ui-button-outlined.ui-button-error {
+  @apply hover:border-error hover:text-error;
+}
+
+.ui-button-filled {
+  @apply bg-default text-background hover:brightness-110;
+}
+.ui-button-filled.ui-button-info {
+  @apply bg-info;
+}
+.ui-button-filled.ui-button-success {
+  @apply bg-success;
+}
+.ui-button-filled.ui-button-warning {
+  @apply bg-warning;
+}
+.ui-button-filled.ui-button-error {
+  @apply bg-error;
+}
+
+.ui-button-text {
+  @apply hover:bg-light;
+}
+.ui-button-text.ui-button-info {
+  @apply text-info;
+}
+.ui-button-text.ui-button-success {
+  @apply text-success;
+}
+.ui-button-text.ui-button-warning {
+  @apply text-warning;
+}
+.ui-button-text.ui-button-error {
+  @apply text-error;
+}
+
+.ui-button-icon {
+  @apply aspect-square p-1.5 h-fit rounded-full hover:bg-light;
+}
+.ui-button-icon.ui-button-info {
+  @apply text-info;
+}
+.ui-button-icon.ui-button-success {
+  @apply text-success;
+}
+.ui-button-icon.ui-button-warning {
+  @apply text-warning;
+}
+.ui-button-icon.ui-button-error {
+  @apply text-error;
+}

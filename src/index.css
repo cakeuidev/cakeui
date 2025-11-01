@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme {
+  --color-default: var(--ui-default);
+  --color-background: var(--ui-background);
+  --color-light: var(--ui-light);
+  --color-gray: var(--ui-gray);
+  --color-deep: var(--ui-deep);
+  --color-info: var(--ui-info);
+  --color-success: var(--ui-success);
+  --color-warning: var(--ui-warning);
+  --color-error: var(--ui-error);
+}
+
+.app-header {
+  @apply px-4 md:px-6 h-15 flex justify-between;
+}
+.app-header > div {
+  @apply flex items-center;
+}
+.app-header > div:first-child {
+  @apply gap-6
+}
+.app-header > div:last-child {
+  @apply gap-2
+}
+.app-home {
+  @apply select-none no-underline text-xl flex items-center gap-2 text-default;
+}
+.app-home img {
+  @apply h-7 w-7;
+}
+.app-link {
+  @apply p-1.5 rounded-full hover:bg-light;
+}
+.app-link img {
+  @apply h-5 w-5;
+}
+.app-menu {
+  @apply font-[monospace] gap-2;
+}
+.app-menu .ui-menu {
+  @apply overflow-visible gap-1;
+}
+.app-menu a {
+  @apply rounded-lg;
+}
+.app-menu a.active {
+  @apply bg-light font-bold;
+}
+.app-menu-title {
+  @apply font-bold text-gray hover:bg-transparent;
+}
+.app-sider {
+  @apply p-6 scroll-py-12;
+}
+.app-sider .app-menu {
+  @apply w-full;
+}
+.app-sider a {
+  @apply px-6;
+}
+.app-drawer {
+  @apply text-xl h-[80vh];
+}
+
+.app-main {
+  scrollbar-gutter: stable;
+}
+.app-container {
+  @apply min-h-full mx-auto p-6;
+}
+.app-container h2 {
+  @apply mt-6;
+}
+.app-container pre {
+  @apply my-3 rounded-lg;
+}
+.app-container ul {
+  @apply pl-6;
+}
+.app-container li {
+  @apply list-disc mb-1;
+}
+.app-container a {
+  @apply text-info underline underline-offset-4;
+}
+
+.example-tabs > .ui-tabs-content {
+  @apply relative p-0;
+}
+.example {
+  @apply my-3 py-15 px-6 md:px-30 overflow-auto flex flex-wrap items-center justify-center
+    rounded-lg border border-light;
+}
+.example-code {
+  @apply absolute top-6 right-3 text-gray;
+}
+.example-popover {
+  @apply bg-black text-white;
+}

@@ -1,0 +1,26 @@
+.ui-tabs {
+  @apply w-full max-h-full flex flex-col;
+}
+
+.ui-tabs-list {
+  @apply overflow-auto flex whitespace-nowrap border-b border-light;
+  scrollbar-width: none;
+}
+
+.ui-tabs-trigger {
+  @apply py-1 px-4 border-b-2 text-gray;
+}
+.ui-tabs-trigger:hover,
+.ui-tabs-active {
+  @apply text-default;
+}
+.ui-tabs-trigger:not(.ui-tabs-active) {
+  @apply border-transparent;
+}
+
+.ui-tabs-content {
+  @apply flex-1 p-2 overflow-auto;
+}
+.ui-tabs-content:not(.ui-tabs-active) {
+  @apply hidden;
+}

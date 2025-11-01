@@ -1,0 +1,25 @@
+.ui-table {
+  @apply block w-fit max-h-full max-w-full overflow-auto
+    rounded-lg border border-table-border bg-background;
+}
+
+.ui-table :is(thead,tfoot) {
+  @apply sticky bg-inherit;
+}
+.ui-table thead {
+  @apply top-0 z-10;
+}
+.ui-table tfoot {
+  @apply bottom-0;
+}
+
+.ui-table :is(th,td) {
+  @apply font-normal p-2 shadow-table-border;
+}
+.ui-table thead :is(th,td),
+.ui-table tbody tr:not(:last-child) :is(th,td) {
+  @apply shadow-[inset_0_-1px];
+}
+.ui-table tfoot :is(th,td) {
+  @apply shadow-[inset_0_1px];
+}

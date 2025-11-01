@@ -1,0 +1,29 @@
+.ui-collapse {
+  @apply w-full;
+}
+
+.ui-collapse-item {
+  @apply border-b border-light;
+}
+
+.ui-collapse-trigger {
+  @apply font-medium py-3 w-full flex items-center justify-between;
+}
+.ui-collapse-icon {
+  @apply text-gray;
+  @apply transition-[transform] duration-500;
+}
+.ui-collapse-open .ui-collapse-icon {
+  @apply rotate-x-180;
+}
+
+.ui-collapse-content {
+  @apply transition-[grid-template-rows,padding] duration-300;
+  @apply grid grid-rows-[0fr];
+}
+.ui-collapse-open > .ui-collapse-content {
+  @apply pb-3 grid-rows-[1fr];
+}
+.ui-collapse-content > div {
+  @apply overflow-hidden;
+}

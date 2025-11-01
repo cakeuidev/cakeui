@@ -1,0 +1,228 @@
+.ui-input {
+  @apply inline-flex items-center gap-1;
+}
+.ui-input,
+.ui-input > input {
+  @apply outline-info;
+}
+.ui-input > input {
+  @apply accent-info;
+}
+.ui-input:has(>:is(input,textarea)[disabled]) {
+  @apply pointer-events-none;
+}
+.ui-input .ui-icon {
+  @apply text-gray;
+}
+.ui-input .ui-button-icon {
+  @apply p-0 hover:bg-transparent;
+}
+.ui-input .ui-button-icon:hover .ui-icon {
+  @apply text-deep;
+}
+
+.ui-input-box {
+  @apply w-60 max-w-full rounded-lg border border-gray -outline-offset-1 hover:outline;
+}
+.ui-input-box:focus-within {
+  @apply outline-2;
+}
+.ui-input-box:has(>input) {
+  @apply py-1 px-2;
+}
+.ui-input-box :is(input,textarea) {
+  @apply flex-1 w-full outline-none placeholder:text-gray;
+}
+
+.ui-input-number > input {
+  @apply text-center;
+}
+.ui-input-number > input::-webkit-inner-spin-button {
+  @apply appearance-none;
+}
+
+.ui-textarea > textarea {
+  @apply py-1 px-2 scroll-px-2 min-h-8 whitespace-pre;
+  scrollbar-width: none;
+}
+
+.ui-radio,
+.ui-checkbox {
+  @apply cursor-pointer gap-2;
+}
+.ui-radio > input,
+.ui-checkbox > input {
+  @apply cursor-pointer h-4.5 w-4.5;
+}
+.ui-radio-group,
+.ui-checkbox-group {
+  @apply flex-wrap gap-x-4;
+}
+
+.ui-switch {
+  @apply cursor-pointer relative h-6 w-11 rounded-full;
+}
+.ui-switch:focus-within {
+  @apply outline-2 outline-offset-1;
+}
+.ui-switch > input {
+  @apply opacity-0;
+}
+.ui-switch > input + span {
+  @apply absolute top-0 left-0 h-full w-full rounded-full bg-gray;
+  @apply transition-[background] duration-300;
+}
+.ui-switch > input:checked + span {
+  @apply bg-info;
+}
+.ui-switch > input:disabled + span {
+  @apply bg-light;
+}
+.ui-switch > input + span::after {
+  @apply content-[''] absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white;
+  @apply transition-[left,translate] duration-300;
+}
+.ui-switch > input:checked + span::after {
+  @apply left-[calc(100%-2px)] -translate-x-full;
+}
+
+.ui-slider {
+  @apply w-60 max-w-full relative;
+}
+.ui-slider > input {
+  @apply appearance-none cursor-pointer w-full;
+}
+.ui-slider > input::-webkit-slider-thumb {
+  @apply appearance-none relative h-4 w-4 rounded-full border-2 border-info bg-white;
+}
+.ui-slider-track {
+  @apply pointer-events-none absolute left-0 top-1/2 -translate-y-1/2
+    h-2 w-full overflow-hidden rounded-lg bg-light;
+}
+.ui-slider-track > div {
+  @apply h-full bg-info;
+}
+
+.ui-select {
+  @apply relative;
+}
+.ui-select-wrapper {
+  @apply flex-1 relative overflow-auto inline-flex flex-wrap gap-1;
+}
+.ui-select-tag {
+  @apply px-1 inline-flex items-center gap-1 rounded-lg bg-light;
+}
+.ui-select-search {
+  @apply absolute top-0 left-0 h-full w-full;
+}
+.ui-select-trigger {
+  @apply pointer-events-none opacity-0 absolute top-0 left-0 h-full w-full;
+}
+.ui-select-dropdown {
+  @apply p-0;
+}
+.ui-select-options {
+  @apply p-1 scroll-p-1 max-h-50 overflow-auto flex flex-col;
+}
+.ui-select-options .ui-button {
+  @apply p-1 justify-between bg-transparent;
+}
+.ui-select-target {
+  @apply bg-light!;
+}
+.ui-select-no-data {
+  @apply py-2 px-3 text-center text-gray;
+}
+
+.ui-date-picker {
+  @apply relative;
+}
+.ui-date-picker-trigger {
+  @apply pointer-events-none opacity-0 absolute bottom-0 left-0 h-full w-full;
+}
+.ui-date-picker-popover {
+  @apply p-0;
+}
+.ui-date-picker-popover .ui-card {
+  @apply border-none min-w-0;
+}
+.ui-date-picker-popover .ui-card-content {
+  @apply p-0 flex items-start;
+}
+.ui-date-picker-popover .ui-calendar {
+  @apply border-none;
+}
+.ui-date-picker-popover .ui-calendar-days .ui-button {
+  @apply p-0 h-full w-full;
+}
+.ui-date-picker-popover .ui-calendar + .ui-date-picker-time {
+  @apply p-2 border-l border-light;
+}
+.ui-date-picker-time {
+  @apply flex-1 p-1 flex text-center;
+}
+.ui-date-picker-col {
+  @apply flex-1 h-full min-w-10 overflow-auto;
+  scrollbar-width: none;
+}
+.ui-date-picker-col .ui-button {
+  @apply block px-0 h-7 w-full;
+}
+.ui-date-picker-col > div:last-child {
+  @apply h-[calc(100%-var(--spacing)*7)];
+}
+.ui-date-picker-popover .ui-card-footer {
+  @apply p-1.5;
+}
+.ui-date-picker-action {
+  @apply flex gap-1;
+}
+.ui-date-picker-action .ui-button {
+  @apply px-2 h-7;
+}
+
+.ui-color-picker > input {
+  @apply cursor-pointer w-6;
+}
+
+.ui-upload {
+  @apply flex-col items-start;
+}
+.ui-upload > input {
+  @apply hidden;
+}
+.ui-upload-trigger .ui-icon {
+  @apply text-inherit;
+}
+.ui-upload-files {
+  @apply inline-flex flex-wrap gap-1;
+}
+.ui-upload-file {
+  @apply px-1 inline-flex items-center gap-1 rounded-lg bg-light;
+}
+
+.ui-form {
+  @apply w-full grid;
+}
+.ui-form-item .ui-input-box,
+.ui-form-item .ui-slider {
+  @apply w-full;
+}
+.ui-form-item:has(:is(input,textarea)[required]) .ui-form-title::before {
+  @apply content-['*'] text-error;
+}
+.ui-form-input {
+  @apply min-h-8.5 flex flex-wrap items-center gap-2;
+}
+.ui-form-input:has(>.ui-form-button) {
+  @apply justify-center;
+}
+.ui-form-info {
+  @apply min-h-6 text-sm;
+}
+.ui-form-error .ui-input-box {
+  @apply outline outline-error;
+}
+.ui-form-error > .ui-form-info {
+  @apply text-error;
+}

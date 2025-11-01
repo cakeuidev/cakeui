@@ -1,0 +1,51 @@
+.ui-carousel {
+  @apply w-full max-h-full flex flex-col gap-3;
+}
+.ui-carousel-dragging .ui-carousel-body {
+  @apply cursor-grabbing;
+}
+.ui-carousel-dragging .ui-carousel-group {
+  @apply pointer-events-none select-none;
+}
+
+.ui-carousel-body {
+  @apply flex-1 relative;
+}
+
+.ui-carousel-group {
+  @apply touch-pan-y h-full overflow-hidden flex;
+}
+.ui-carousel-group::before,
+.ui-carousel-group::after {
+  @apply content-[''] shrink-0 w-full;
+}
+
+.ui-carousel-item {
+  @apply shrink-0 relative w-full;
+}
+.ui-carousel-center {
+  @apply pointer-events-none absolute top-1/2 left-1/2 -translate-1/2 h-px w-px;
+}
+
+.ui-carousel-prev,
+.ui-carousel-next {
+  @apply absolute z-10 top-1/2 -translate-y-1/2 text-gray hover:bg-transparent hover:text-deep;
+}
+.ui-carousel-prev {
+  @apply left-0;
+}
+.ui-carousel-next {
+  @apply right-0;
+}
+
+.ui-carousel-dots {
+  @apply overflow-auto flex justify-center gap-3;
+  scrollbar-width: none;
+}
+.ui-carousel-dots button {
+  @apply shrink-0 h-2.5 w-2.5 rounded-full bg-light;
+}
+.ui-carousel-dots button:hover,
+.ui-carousel-dots .ui-carousel-active {
+  @apply bg-gray;
+}

@@ -1,0 +1,23 @@
+.ui-dialog {
+  @apply fixed z-1000 top-1/2 left-1/2 -translate-1/2
+    min-w-70 max-h-screen max-w-screen overflow-auto overscroll-contain flex flex-col
+    rounded-lg shadow-lg border border-light bg-inherit;
+  @apply transition-[opacity,scale] duration-300;
+  @apply opacity-100 scale-100;
+
+}
+.ui-dialog-close {
+  @apply opacity-0 scale-0;
+}
+
+.ui-dialog-title {
+  @apply p-1 pl-2 flex items-center justify-between gap-1 border-b border-light;
+}
+
+.ui-dialog-content {
+  @apply flex-1 p-2 overflow-auto overscroll-contain;
+}
+
+.ui-dialog-footer {
+  @apply p-2 border-t border-light;
+}

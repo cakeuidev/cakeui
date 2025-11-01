@@ -1,0 +1,12 @@
+.ui-pagination {
+  @apply w-fit max-w-full flex items-center gap-1;
+}
+
+.ui-pagination-group {
+  @apply flex-1 overflow-auto flex items-center justify-center gap-1;
+  scrollbar-width: none;
+}
+
+.ui-pagination .ui-button {
+  @apply p-0 h-8 min-w-8 border-default;
+}

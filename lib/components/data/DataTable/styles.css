@@ -1,0 +1,154 @@
+.ui-data-table {
+  @apply relative w-full max-h-full overflow-hidden flex flex-col gap-2 items-center;
+}
+.ui-data-table-gridlines :is(th,td):not(:last-child) > div {
+  @apply shadow-[inset_-1px_0] shadow-table-border;
+}
+.ui-data-table-rendering :is(th,td) > div {
+  @apply w-fit! max-w-50;
+}
+.ui-data-table:not(.ui-data-table-rendering) :is(thead,tbody,tfoot) {
+  @apply block;
+}
+.ui-data-table:not(.ui-data-table-rendering) tbody {
+  @apply relative;
+}
+.ui-data-table:not(.ui-data-table-rendering) tbody tr {
+  @apply absolute flex;
+}
+.ui-data-table-rendering :is(th,td):not(:last-child) > div {
+  @apply shadow-none;
+}
+.ui-data-table-resizing .ui-data-table-group {
+  @apply cursor-col-resize;
+}
+.ui-data-table-dragging .ui-data-table-group {
+  @apply cursor-grabbing;
+}
+.ui-data-table-resizing .ui-data-table-group > div,
+.ui-data-table-dragging .ui-data-table-group > div {
+  @apply pointer-events-none select-none;
+}
+
+.ui-data-table-group {
+  @apply flex-1 w-full overflow-auto flex border border-table-border;
+}
+.ui-data-table-group > div {
+  @apply h-fit min-h-full bg-background;
+}
+.ui-data-table-left,
+.ui-data-table-right {
+  @apply sticky z-10;
+}
+.ui-data-table-left {
+  @apply left-0;
+}
+.ui-data-table-right {
+  @apply right-0;
+}
+.ui-data-table-main thead {
+  @apply z-9;
+}
+.ui-data-table-left th:first-child,
+.ui-data-table-right th:last-child,
+.ui-data-table-main th:last-child {
+  @apply overflow-hidden;
+}
+.ui-data-table-shadow {
+  @apply shadow-[0_0_10px_rgba(0,0,0,0.3)];
+}
+
+.ui-data-table table {
+  @apply overflow-visible rounded-none border-none outline outline-table-border bg-inherit;
+}
+.ui-data-table thead th {
+  @apply cursor-pointer relative;
+}
+.ui-data-table:not(:has(tbody)) :is(th,td) {
+  @apply shadow-none;
+}
+.ui-data-table :is(th,td) {
+  @apply p-0 whitespace-nowrap;
+}
+.ui-data-table :is(th,td) > div {
+  @apply px-2 overflow-hidden flex items-center gap-1;
+}
+.ui-data-table :is(th,td)[align=left] div {
+  @apply justify-start text-left;
+}
+.ui-data-table :is(th,td)[align=right] div {
+  @apply justify-end text-right;
+}
+.ui-data-table :is(th,td)[align=center] div {
+  @apply justify-center text-center;
+}
+
+.ui-data-table-hover {
+  @apply bg-table-hover;
+}
+.ui-data-table-selected {
+  @apply bg-table-selected;
+}
+
+.ui-data-table-field {
+  @apply justify-between gap-1;
+}
+.ui-data-table-field > div {
+  @apply flex-1 overflow-auto flex items-center gap-1;
+  scrollbar-width: none;
+}
+.ui-data-table-sort,
+.ui-data-table-filter {
+  @apply relative h-6 w-3 overflow-hidden rounded-full text-gray hover:text-deep;
+}
+.ui-data-table-sort > span,
+.ui-data-table-filter > span {
+  @apply absolute left-1/2 -translate-x-1/2;
+}
+.ui-data-table-sort > span:first-child {
+  @apply bottom-1/2 translate-y-1.5;
+}
+.ui-data-table-sort > span:last-child {
+  @apply top-1/2 -translate-y-1.5;
+}
+.ui-data-table-sort[data-sort=asc] > span:first-child,
+.ui-data-table-sort[data-sort=desc] > span:last-child {
+  @apply text-info;
+}
+.ui-data-table-filter > span {
+  @apply top-1/2 -translate-y-1/2;
+}
+.ui-data-table-popover {
+  @apply p-0 w-50;
+}
+.ui-data-table-popover .ui-card {
+  @apply w-full min-w-0 border-none;
+}
+.ui-data-table-popover .ui-card-title {
+  @apply p-1 border-none;
+}
+.ui-data-table-popover .ui-card-content {
+  @apply p-0;
+}
+.ui-data-table-popover .ui-card-footer {
+  @apply p-1 flex justify-between;
+}
+.ui-data-table-popover .ui-input {
+  @apply w-full;
+}
+.ui-data-table-popover .ui-checkbox {
+  @apply my-0.5 pl-1.5 whitespace-nowrap;
+}
+.ui-data-table-popover .ui-button {
+  @apply px-2 h-7;
+}
+.ui-data-table-resize {
+  @apply cursor-col-resize absolute z-10 top-0 h-full flex justify-center;
+}
+
+.ui-data-table-split-line {
+  @apply pointer-events-none absolute bg-info;
+}
+.ui-data-table-drag-block {
+  @apply pointer-events-none absolute z-10 top-0 bg-default opacity-10;
+}
