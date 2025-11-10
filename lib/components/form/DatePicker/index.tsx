@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import dayjs from 'dayjs'
-import customParseFormat from 'dayjs/plugin/customParseFormat'
+import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 import { cls, useResizeObserver } from '../../../utils'
 import { useInputBox, useInputState, useStateListner } from '../../tools'
 import Button from '../../general/Button'
