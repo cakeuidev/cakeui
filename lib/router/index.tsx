@@ -138,12 +138,14 @@ export function StaticRouter(props: StaticRouterProps) {
     basename = ''
   } = props
 
+  const urlObj = new URL(url, 'http://localhost')
+
   return (
     <StaticRouterContext.Provider
       value={{
-        url,
+        url: urlObj.pathname,
         basename,
-        query: Object.fromEntries(new URL(url, 'http://localhost').searchParams)
+        query: Object.fromEntries(urlObj.searchParams)
       }}
     >
       {props.children}
