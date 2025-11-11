@@ -24,8 +24,8 @@ export type RouterContext = {
 
 const RouterContext = React.createContext<RouterContext>(null)
 const StaticRouterContext = React.createContext<{
-  url: string
   basename: string
+  pathname: string
   query: { [k: string]: string }
 } | null>(null)
 
@@ -52,11 +52,17 @@ export function Router(props: RouterProps) {
     pathname = pathname.replace(new RegExp(`^${base}`), '')
     return pathname ? pathname.replace(/^([^\/])/, '/$1') : '/'
   }
+  const getQuery = () => {
+    return staticRouterContext ?
+      staticRouterContext.query :
+      Object.fromEntries(new URLSearchParams(location.search))
+  }
 
   const base = convert(staticRouterContext ? staticRouterContext.basename : basename)
   const [pathname, setPathname] = useState(() => (
-    getPathname(staticRouterContext ? staticRouterContext.url : location.pathname)
+    getPathname(staticRouterContext ? staticRouterContext.pathname : location.pathname)
   ))
+  const [query, setQuery] = useState(getQuery)
 
   const [element, params] = useMemo(() => {
     if (!pathname) {
@@ -111,6 +117,7 @@ export function Router(props: RouterProps) {
     if (path !== pathname) {
       history.pushState(null, '', (base === '/' ? '' : base) + path)
       setPathname(getPathname(location.pathname))
+      setQuery(getQuery)
     }
   })
 
@@ -121,9 +128,7 @@ export function Router(props: RouterProps) {
       value={{
         pathname,
         params,
-        query: staticRouterContext ?
-          staticRouterContext.query :
-          Object.fromEntries(new URLSearchParams(location.search)),
+        query,
         navigate
       }}
     >
@@ -143,8 +148,8 @@ export function StaticRouter(props: StaticRouterProps) {
   return (
     <StaticRouterContext.Provider
       value={{
-        url: urlObj.pathname,
         basename,
+        pathname: urlObj.pathname,
         query: Object.fromEntries(urlObj.searchParams)
       }}
     >
